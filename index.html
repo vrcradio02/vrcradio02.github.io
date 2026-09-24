@@ -1,96 +1,696 @@
+```html
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VRCstudio - Forum de code</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #111827;
-      color: white;
-      text-align: center;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    header {
-      padding: 80px 20px;
-      background: linear-gradient(135deg, #2563eb, #7c3aed);
-    }
+    <title>VRCstudio — Projets & Programmation</title>
 
-    h1 {
-      font-size: 3rem;
-      margin-bottom: 15px;
-    }
+    <meta name="description"
+          content="VRCstudio est un espace consacré à la programmation, aux projets créatifs et au partage de connaissances.">
 
-    p {
-      font-size: 1.2rem;
-      line-height: 1.6;
-    }
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    .section {
-      max-width: 800px;
-      margin: auto;
-      padding: 50px 20px;
-    }
+        html {
+            scroll-behavior: smooth;
+        }
 
-    .button {
-      display: inline-block;
-      margin-top: 25px;
-      padding: 14px 25px;
-      background: white;
-      color: #2563eb;
-      text-decoration: none;
-      border-radius: 8px;
-      font-weight: bold;
-    }
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #0b1020;
+            color: #ffffff;
+            line-height: 1.6;
+        }
 
-    .button:hover {
-      background: #dbeafe;
-    }
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
 
-    footer {
-      padding: 25px;
-      background: #030712;
-      color: #9ca3af;
-    }
-  </style>
+        /* =========================
+           NAVIGATION
+        ========================= */
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+
+            background: rgba(11, 16, 32, 0.88);
+            backdrop-filter: blur(14px);
+
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: auto;
+
+            height: 70px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 25px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 900;
+            letter-spacing: 1px;
+        }
+
+        .logo span {
+            color: #6c63ff;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #dfe3ff;
+            font-weight: 600;
+            transition: 0.25s;
+        }
+
+        .nav-links a:hover {
+            color: #7c73ff;
+        }
+
+        /* =========================
+           HERO
+        ========================= */
+
+        .hero {
+            min-height: 100vh;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            text-align: center;
+
+            padding: 120px 20px 80px;
+
+            background:
+                radial-gradient(circle at 20% 20%, rgba(108,99,255,0.25), transparent 35%),
+                radial-gradient(circle at 80% 70%, rgba(0,200,255,0.15), transparent 35%);
+        }
+
+        .hero-content {
+            max-width: 900px;
+        }
+
+        .badge {
+            display: inline-block;
+
+            padding: 8px 16px;
+
+            border: 1px solid rgba(124,115,255,0.5);
+            border-radius: 999px;
+
+            color: #bdb8ff;
+            background: rgba(108,99,255,0.1);
+
+            margin-bottom: 25px;
+
+            font-size: 14px;
+        }
+
+        .hero h1 {
+            font-size: clamp(55px, 10vw, 105px);
+            line-height: 1;
+            margin-bottom: 25px;
+
+            font-weight: 950;
+            letter-spacing: -4px;
+        }
+
+        .hero h1 span {
+            color: #746cff;
+        }
+
+        .hero p {
+            max-width: 700px;
+            margin: auto;
+
+            color: #b7bfdc;
+            font-size: 20px;
+        }
+
+        .buttons {
+            margin-top: 35px;
+
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 14px 25px;
+
+            border-radius: 10px;
+
+            font-weight: 800;
+
+            transition: 0.25s;
+        }
+
+        .btn-primary {
+            background: #6c63ff;
+            box-shadow: 0 8px 30px rgba(108,99,255,0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            background: #8179ff;
+        }
+
+        .btn-secondary {
+            border: 1px solid rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.04);
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-3px);
+            background: rgba(255,255,255,0.08);
+        }
+
+        /* =========================
+           SECTIONS
+        ========================= */
+
+        section {
+            max-width: 1200px;
+            margin: auto;
+            padding: 100px 25px;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 55px;
+        }
+
+        .section-title h2 {
+            font-size: 42px;
+            margin-bottom: 10px;
+        }
+
+        .section-title p {
+            color: #9fa8c7;
+        }
+
+        /* =========================
+           CARDS
+        ========================= */
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 22px;
+        }
+
+        .card {
+            padding: 30px;
+
+            background: rgba(255,255,255,0.045);
+
+            border: 1px solid rgba(255,255,255,0.08);
+
+            border-radius: 18px;
+
+            transition: 0.3s;
+
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: "";
+
+            position: absolute;
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 3px;
+
+            background: linear-gradient(
+                90deg,
+                #6c63ff,
+                #00d4ff
+            );
+        }
+
+        .card:hover {
+            transform: translateY(-7px);
+
+            border-color: rgba(124,115,255,0.35);
+
+            background: rgba(255,255,255,0.07);
+        }
+
+        .icon {
+            font-size: 38px;
+            margin-bottom: 18px;
+        }
+
+        .card h3 {
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            color: #aab2ce;
+        }
+
+        /* =========================
+           LANGAGES
+        ========================= */
+
+        .languages {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .language {
+            padding: 10px 18px;
+
+            border-radius: 999px;
+
+            background: rgba(255,255,255,0.05);
+
+            border: 1px solid rgba(255,255,255,0.1);
+
+            color: #dfe3ff;
+
+            transition: 0.2s;
+        }
+
+        .language:hover {
+            transform: scale(1.05);
+            border-color: #746cff;
+        }
+
+        /* =========================
+           PROJET
+        ========================= */
+
+        .project {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 35px;
+
+            align-items: center;
+
+            padding: 35px;
+
+            border-radius: 22px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(108,99,255,0.13),
+                    rgba(0,212,255,0.04)
+                );
+
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .project-preview {
+            min-height: 300px;
+
+            border-radius: 18px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 80px;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(108,99,255,0.25),
+                    transparent 65%
+                );
+
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .project h3 {
+            font-size: 32px;
+            margin-bottom: 15px;
+        }
+
+        .project p {
+            color: #adb5d0;
+            margin-bottom: 20px;
+        }
+
+        /* =========================
+           COMMUNAUTÉ
+        ========================= */
+
+        .community {
+            text-align: center;
+
+            padding: 70px 25px;
+
+            border-radius: 25px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(108,99,255,0.18),
+                    rgba(0,212,255,0.08)
+                );
+
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .community h2 {
+            font-size: 42px;
+            margin-bottom: 15px;
+        }
+
+        .community p {
+            max-width: 650px;
+            margin: auto auto 30px;
+
+            color: #b3bbd5;
+        }
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+            border-top: 1px solid rgba(255,255,255,0.08);
+
+            padding: 35px 20px;
+
+            text-align: center;
+
+            color: #858da9;
+        }
+
+        footer strong {
+            color: #ffffff;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 750px) {
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                letter-spacing: -2px;
+            }
+
+            .hero p {
+                font-size: 17px;
+            }
+
+            section {
+                padding: 75px 20px;
+            }
+
+            .project {
+                grid-template-columns: 1fr;
+            }
+
+            .project-preview {
+                min-height: 220px;
+            }
+
+            .section-title h2,
+            .community h2 {
+                font-size: 34px;
+            }
+        }
+    </style>
 </head>
+
 <body>
 
-  <header>
-    <h1>Bienvenue sur VRCstudio</h1>
-    <p>Le forum dédié au debutants en code et au proffesionels (aider les debutants pour leurs passion).</p>
-    <a class="button" href="https://vrcstudio.freeflarum.com" target="_blank">
-      Rejoindre le forum
-    </a>
-  </header>
+<header>
+    <nav>
 
-  <main>
-    <section class="section">
-      <h2>À propos de VRCstudio</h2>
-      <p>
-        VRCstudio est un espace communautaire où les passionnés peuvent
-        échanger, poser leurs questions, partager leurs créations et discuter
-        de l'univers du code
-      </p>
+        <a href="#accueil" class="logo">
+            VRC<span>studio</span>
+        </a>
+
+        <ul class="nav-links">
+            <li><a href="#accueil">Accueil</a></li>
+            <li><a href="#apropos">À propos</a></li>
+            <li><a href="#langages">Langages</a></li>
+            <li><a href="#projets">Projets</a></li>
+            <li><a href="#communaute">Communauté</a></li>
+        </ul>
+
+    </nav>
+</header>
+
+
+<main>
+
+    <!-- ACCUEIL -->
+
+    <div class="hero" id="accueil">
+
+        <div class="hero-content">
+
+            <div class="badge">
+                💻 Programmation • Créativité • Communauté
+            </div>
+
+            <h1>
+                VRC<span>studio</span>
+            </h1>
+
+            <p>
+                Un espace pour découvrir, créer et partager des projets
+                de programmation dans de nombreux langages.
+            </p>
+
+            <div class="buttons">
+
+                <a href="#projets" class="btn btn-primary">
+                    🚀 Découvrir les projets
+                </a>
+
+                <a href="#communaute" class="btn btn-secondary">
+                    💬 Rejoindre la communauté
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- À PROPOS -->
+
+    <section id="apropos">
+
+        <div class="section-title">
+
+            <h2>À propos de VRCstudio</h2>
+
+            <p>
+                Un espace fait pour apprendre, expérimenter et créer.
+            </p>
+
+        </div>
+
+        <div class="cards">
+
+            <div class="card">
+
+                <div class="icon">💡</div>
+
+                <h3>Apprendre</h3>
+
+                <p>
+                    Découvre de nouvelles technologies et améliore
+                    progressivement tes connaissances en programmation.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="icon">🛠️</div>
+
+                <h3>Créer</h3>
+
+                <p>
+                    Développe tes propres applications, sites Internet,
+                    jeux et outils.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="icon">🤝</div>
+
+                <h3>Partager</h3>
+
+                <p>
+                    Présente tes projets, échange avec d'autres passionnés
+                    et découvre leurs créations.
+                </p>
+
+            </div>
+
+        </div>
+
     </section>
 
-    <section class="section">
-      <h2>Pourquoi rejoindre le forum ?</h2>
-      <p>
-        Découvrez une communauté active, partagez vos projets, trouvez de l'aide
-        et participez aux discussions autour du codage.
-      </p>
-      <a class="button" href="https://vrcstudio.freeflarum.com" target="_blank">
-        Visiter vrcstudio.freeflarum.com
-      </a>
-    </section>
-  </main>
 
-  <footer>
-    © 2026 VRCstudio — Tous droits réservés
-  </footer>
+    <!-- LANGAGES -->
+
+    <section id="langages">
+
+        <div class="section-title">
+
+            <h2>Les langages</h2>
+
+            <p>
+                Des projets dans de nombreux langages de programmation.
+            </p>
+
+        </div>
+
+        <div class="languages">
+
+            <span class="language">🐍 Python</span>
+            <span class="language">🌐 HTML</span>
+            <span class="language">🎨 CSS</span>
+            <span class="language">⚡ JavaScript</span>
+            <span class="language">☕ Java</span>
+            <span class="language">⚙️ C</span>
+            <span class="language">🔧 C++</span>
+            <span class="language">#️⃣ C#</span>
+            <span class="language">🦀 Rust</span>
+            <span class="language">🐘 PHP</span>
+            <span class="language">💎 Ruby</span>
+            <span class="language">🟦 TypeScript</span>
+
+        </div>
+
+    </section>
+
+
+    <!-- PROJETS -->
+
+    <section id="projets">
+
+        <div class="section-title">
+
+            <h2>Projets</h2>
+
+            <p>
+                Découvrez les créations présentées sur VRCstudio.
+            </p>
+
+        </div>
+
+        <div class="project">
+
+            <div class="project-preview">
+                &lt;/&gt;
+            </div>
+
+            <div>
+
+                <h3>Ton prochain projet</h3>
+
+                <p>
+                    Cette section peut présenter ton projet principal,
+                    ton application, ton jeu ou n'importe quelle création
+                    que tu souhaites partager.
+                </p>
+
+                <a href="#" class="btn btn-primary">
+                    Voir le projet →
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- COMMUNAUTÉ -->
+
+    <section id="communaute">
+
+        <div class="community">
+
+            <h2>Rejoins VRCstudio</h2>
+
+            <p>
+                Une communauté où les passionnés peuvent discuter,
+                présenter leurs projets, poser leurs questions et
+                apprendre ensemble.
+            </p>
+
+            <!-- Remplace # par l'adresse de ton forum -->
+
+            <a href="#" class="btn btn-primary">
+                💬 Accéder au forum
+            </a>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<footer>
+
+    <p>
+        © <span id="year"></span>
+        <strong>VRCstudio</strong> — Tous droits réservés.
+    </p>
+
+</footer>
+
+
+<script>
+    document.getElementById("year").textContent =
+        new Date().getFullYear();
+</script>
 
 </body>
 </html>
+```
