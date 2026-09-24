@@ -5,10 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>VRCstudio — Projets & Programmation</title>
+    <title>VRCstudio — Projets, IA & programmation</title>
 
     <meta name="description"
-          content="VRCstudio est un espace consacré à la programmation, aux projets créatifs et au partage de connaissances.">
+          content="VRCstudio : communauté de programmation, projets IA et créations informatiques. Découvrez Stickman Bureau et participez aux projets.">
+
+    <meta name="keywords"
+          content="VRCstudio, programmation, IA, intelligence artificielle, Stickman Bureau, Python, projets, développement">
 
     <style>
         * {
@@ -23,8 +26,8 @@
 
         body {
             font-family: Arial, Helvetica, sans-serif;
-            background: #0b1020;
-            color: #ffffff;
+            background: #080b16;
+            color: #fff;
             line-height: 1.6;
         }
 
@@ -41,36 +44,35 @@
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
+            right: 0;
             z-index: 1000;
 
-            background: rgba(11, 16, 32, 0.88);
-            backdrop-filter: blur(14px);
+            background: rgba(8, 11, 22, 0.88);
+            backdrop-filter: blur(15px);
 
             border-bottom: 1px solid rgba(255,255,255,0.08);
         }
 
         nav {
             max-width: 1200px;
-            margin: auto;
+            height: 72px;
 
-            height: 70px;
+            margin: auto;
+            padding: 0 25px;
 
             display: flex;
             align-items: center;
             justify-content: space-between;
-
-            padding: 0 25px;
         }
 
         .logo {
-            font-size: 24px;
+            font-size: 25px;
             font-weight: 900;
             letter-spacing: 1px;
         }
 
         .logo span {
-            color: #6c63ff;
+            color: #756cff;
         }
 
         .nav-links {
@@ -80,13 +82,13 @@
         }
 
         .nav-links a {
-            color: #dfe3ff;
+            color: #cbd0e8;
             font-weight: 600;
-            transition: 0.25s;
+            transition: .25s;
         }
 
         .nav-links a:hover {
-            color: #7c73ff;
+            color: #8078ff;
         }
 
         /* =========================
@@ -97,16 +99,24 @@
             min-height: 100vh;
 
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
 
             text-align: center;
 
-            padding: 120px 20px 80px;
+            padding: 130px 20px 80px;
 
             background:
-                radial-gradient(circle at 20% 20%, rgba(108,99,255,0.25), transparent 35%),
-                radial-gradient(circle at 80% 70%, rgba(0,200,255,0.15), transparent 35%);
+                radial-gradient(
+                    circle at 20% 25%,
+                    rgba(117,108,255,.25),
+                    transparent 35%
+                ),
+                radial-gradient(
+                    circle at 80% 70%,
+                    rgba(0,200,255,.12),
+                    transparent 35%
+                );
         }
 
         .hero-content {
@@ -116,13 +126,15 @@
         .badge {
             display: inline-block;
 
-            padding: 8px 16px;
+            padding: 8px 17px;
 
-            border: 1px solid rgba(124,115,255,0.5);
             border-radius: 999px;
 
-            color: #bdb8ff;
-            background: rgba(108,99,255,0.1);
+            background: rgba(117,108,255,.1);
+
+            border: 1px solid rgba(117,108,255,.4);
+
+            color: #c5c0ff;
 
             margin-bottom: 25px;
 
@@ -131,22 +143,25 @@
 
         .hero h1 {
             font-size: clamp(55px, 10vw, 105px);
-            line-height: 1;
-            margin-bottom: 25px;
 
-            font-weight: 950;
+            line-height: 1;
+
             letter-spacing: -4px;
+
+            margin-bottom: 25px;
         }
 
         .hero h1 span {
-            color: #746cff;
+            color: #756cff;
         }
 
         .hero p {
-            max-width: 700px;
+            max-width: 720px;
+
             margin: auto;
 
-            color: #b7bfdc;
+            color: #aeb6d2;
+
             font-size: 20px;
         }
 
@@ -154,40 +169,49 @@
             margin-top: 35px;
 
             display: flex;
+
             justify-content: center;
+
             gap: 15px;
 
             flex-wrap: wrap;
         }
 
         .btn {
-            padding: 14px 25px;
+            display: inline-block;
+
+            padding: 14px 24px;
 
             border-radius: 10px;
 
             font-weight: 800;
 
-            transition: 0.25s;
+            transition: .25s;
         }
 
         .btn-primary {
-            background: #6c63ff;
-            box-shadow: 0 8px 30px rgba(108,99,255,0.3);
+            background: #756cff;
+
+            box-shadow:
+                0 10px 35px rgba(117,108,255,.3);
         }
 
         .btn-primary:hover {
             transform: translateY(-3px);
-            background: #8179ff;
+
+            background: #8982ff;
         }
 
         .btn-secondary {
-            border: 1px solid rgba(255,255,255,0.15);
-            background: rgba(255,255,255,0.04);
+            background: rgba(255,255,255,.04);
+
+            border: 1px solid rgba(255,255,255,.12);
         }
 
         .btn-secondary:hover {
             transform: translateY(-3px);
-            background: rgba(255,255,255,0.08);
+
+            background: rgba(255,255,255,.08);
         }
 
         /* =========================
@@ -196,172 +220,252 @@
 
         section {
             max-width: 1200px;
+
             margin: auto;
+
             padding: 100px 25px;
         }
 
         .section-title {
             text-align: center;
+
             margin-bottom: 55px;
         }
 
         .section-title h2 {
             font-size: 42px;
+
             margin-bottom: 10px;
         }
 
         .section-title p {
-            color: #9fa8c7;
+            color: #939cb9;
         }
 
         /* =========================
-           CARDS
-        ========================= */
-
-        .cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 22px;
-        }
-
-        .card {
-            padding: 30px;
-
-            background: rgba(255,255,255,0.045);
-
-            border: 1px solid rgba(255,255,255,0.08);
-
-            border-radius: 18px;
-
-            transition: 0.3s;
-
-            position: relative;
-            overflow: hidden;
-        }
-
-        .card::before {
-            content: "";
-
-            position: absolute;
-            top: 0;
-            left: 0;
-
-            width: 100%;
-            height: 3px;
-
-            background: linear-gradient(
-                90deg,
-                #6c63ff,
-                #00d4ff
-            );
-        }
-
-        .card:hover {
-            transform: translateY(-7px);
-
-            border-color: rgba(124,115,255,0.35);
-
-            background: rgba(255,255,255,0.07);
-        }
-
-        .icon {
-            font-size: 38px;
-            margin-bottom: 18px;
-        }
-
-        .card h3 {
-            font-size: 22px;
-            margin-bottom: 10px;
-        }
-
-        .card p {
-            color: #aab2ce;
-        }
-
-        /* =========================
-           LANGAGES
-        ========================= */
-
-        .languages {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 12px;
-        }
-
-        .language {
-            padding: 10px 18px;
-
-            border-radius: 999px;
-
-            background: rgba(255,255,255,0.05);
-
-            border: 1px solid rgba(255,255,255,0.1);
-
-            color: #dfe3ff;
-
-            transition: 0.2s;
-        }
-
-        .language:hover {
-            transform: scale(1.05);
-            border-color: #746cff;
-        }
-
-        /* =========================
-           PROJET
+           PROJET PRINCIPAL
         ========================= */
 
         .project {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 35px;
+
+            grid-template-columns: 1fr 1.2fr;
+
+            gap: 40px;
 
             align-items: center;
 
             padding: 35px;
 
-            border-radius: 22px;
+            border-radius: 24px;
 
             background:
                 linear-gradient(
                     135deg,
-                    rgba(108,99,255,0.13),
-                    rgba(0,212,255,0.04)
+                    rgba(117,108,255,.15),
+                    rgba(0,200,255,.04)
                 );
 
-            border: 1px solid rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,.09);
         }
 
-        .project-preview {
-            min-height: 300px;
-
-            border-radius: 18px;
+        .project-visual {
+            min-height: 350px;
 
             display: flex;
+
             align-items: center;
+
             justify-content: center;
 
-            font-size: 80px;
+            position: relative;
+
+            border-radius: 20px;
 
             background:
                 radial-gradient(
                     circle,
-                    rgba(108,99,255,0.25),
+                    rgba(117,108,255,.3),
                     transparent 65%
                 );
 
-            border: 1px solid rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,.08);
+        }
+
+        .stickman {
+            font-size: 140px;
+
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+
+            0%, 100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-15px);
+            }
+
         }
 
         .project h3 {
-            font-size: 32px;
+            font-size: 34px;
+
             margin-bottom: 15px;
         }
 
-        .project p {
-            color: #adb5d0;
+        .project-description {
+            color: #b2bad3;
+
             margin-bottom: 20px;
+        }
+
+        .features {
+            list-style: none;
+
+            margin: 20px 0;
+        }
+
+        .features li {
+            margin-bottom: 10px;
+
+            color: #d8dcef;
+        }
+
+        .features li::before {
+            content: "✓";
+
+            color: #8078ff;
+
+            font-weight: bold;
+
+            margin-right: 10px;
+        }
+
+        /* =========================
+           RECOMPENSE
+        ========================= */
+
+        .reward {
+            margin-top: 25px;
+
+            padding: 20px;
+
+            border-radius: 14px;
+
+            background: rgba(255,255,255,.04);
+
+            border: 1px solid rgba(255,255,255,.08);
+        }
+
+        .reward strong {
+            color: #9a93ff;
+        }
+
+        /* =========================
+           VTS
+        ========================= */
+
+        .vts-box {
+            padding: 35px;
+
+            border-radius: 20px;
+
+            background: rgba(255,255,255,.04);
+
+            border: 1px solid rgba(255,255,255,.08);
+        }
+
+        .vts-box h3 {
+            font-size: 27px;
+
+            margin-bottom: 15px;
+        }
+
+        .vts-box p {
+            color: #aeb6d0;
+
+            margin-bottom: 15px;
+        }
+
+        .vts-rules {
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fit, minmax(220px, 1fr));
+
+            gap: 15px;
+
+            margin-top: 25px;
+        }
+
+        .vts-rule {
+            padding: 20px;
+
+            border-radius: 14px;
+
+            background: rgba(117,108,255,.07);
+
+            border: 1px solid rgba(117,108,255,.15);
+        }
+
+        .vts-rule strong {
+            display: block;
+
+            font-size: 25px;
+
+            margin-bottom: 5px;
+
+            color: #8179ff;
+        }
+
+        /* =========================
+           VALEURS
+        ========================= */
+
+        .cards {
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fit, minmax(250px, 1fr));
+
+            gap: 20px;
+        }
+
+        .card {
+            padding: 30px;
+
+            border-radius: 18px;
+
+            background: rgba(255,255,255,.04);
+
+            border: 1px solid rgba(255,255,255,.08);
+
+            transition: .3s;
+        }
+
+        .card:hover {
+            transform: translateY(-7px);
+
+            border-color: rgba(117,108,255,.35);
+        }
+
+        .card-icon {
+            font-size: 38px;
+
+            margin-bottom: 15px;
+        }
+
+        .card h3 {
+            font-size: 22px;
+
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            color: #a7afc9;
         }
 
         /* =========================
@@ -378,23 +482,45 @@
             background:
                 linear-gradient(
                     135deg,
-                    rgba(108,99,255,0.18),
-                    rgba(0,212,255,0.08)
+                    rgba(117,108,255,.18),
+                    rgba(0,200,255,.07)
                 );
 
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,.1);
         }
 
         .community h2 {
             font-size: 42px;
+
             margin-bottom: 15px;
         }
 
         .community p {
-            max-width: 650px;
-            margin: auto auto 30px;
+            max-width: 700px;
 
-            color: #b3bbd5;
+            margin: 0 auto 30px;
+
+            color: #adb5d0;
+        }
+
+        /* =========================
+           CONTACT
+        ========================= */
+
+        .contact {
+            text-align: center;
+        }
+
+        .contact p {
+            color: #aab2cc;
+
+            margin-bottom: 20px;
+        }
+
+        .mention {
+            color: #8179ff;
+
+            font-weight: bold;
         }
 
         /* =========================
@@ -402,24 +528,24 @@
         ========================= */
 
         footer {
-            border-top: 1px solid rgba(255,255,255,0.08);
-
             padding: 35px 20px;
 
             text-align: center;
 
-            color: #858da9;
+            color: #737b97;
+
+            border-top: 1px solid rgba(255,255,255,.08);
         }
 
         footer strong {
-            color: #ffffff;
+            color: white;
         }
 
         /* =========================
-           RESPONSIVE
+           MOBILE
         ========================= */
 
-        @media (max-width: 750px) {
+        @media(max-width: 800px) {
 
             .nav-links {
                 display: none;
@@ -441,21 +567,32 @@
                 grid-template-columns: 1fr;
             }
 
-            .project-preview {
-                min-height: 220px;
+            .project-visual {
+                min-height: 250px;
+            }
+
+            .stickman {
+                font-size: 100px;
             }
 
             .section-title h2,
             .community h2 {
                 font-size: 34px;
             }
+
         }
     </style>
 </head>
 
+
 <body>
 
+<!-- =========================
+     NAVIGATION
+========================= -->
+
 <header>
+
     <nav>
 
         <a href="#accueil" class="logo">
@@ -463,27 +600,42 @@
         </a>
 
         <ul class="nav-links">
-            <li><a href="#accueil">Accueil</a></li>
-            <li><a href="#apropos">À propos</a></li>
-            <li><a href="#langages">Langages</a></li>
-            <li><a href="#projets">Projets</a></li>
-            <li><a href="#communaute">Communauté</a></li>
+
+            <li>
+                <a href="#accueil">Accueil</a>
+            </li>
+
+            <li>
+                <a href="#projet">Projet</a>
+            </li>
+
+            <li>
+                <a href="#vts">VTS</a>
+            </li>
+
+            <li>
+                <a href="#communaute">Communauté</a>
+            </li>
+
         </ul>
 
     </nav>
+
 </header>
 
 
-<main>
+<!-- =========================
+     ACCUEIL
+========================= -->
 
-    <!-- ACCUEIL -->
+<main>
 
     <div class="hero" id="accueil">
 
         <div class="hero-content">
 
             <div class="badge">
-                💻 Programmation • Créativité • Communauté
+                🤖 IA • 💻 Programmation • 👥 Communauté
             </div>
 
             <h1>
@@ -491,18 +643,26 @@
             </h1>
 
             <p>
-                Un espace pour découvrir, créer et partager des projets
-                de programmation dans de nombreux langages.
+                Une communauté dédiée aux projets informatiques,
+                à la programmation et à la création de nouvelles
+                expériences grâce à l'intelligence artificielle.
             </p>
 
             <div class="buttons">
 
-                <a href="#projets" class="btn btn-primary">
-                    🚀 Découvrir les projets
+                <a
+                    href="#projet"
+                    class="btn btn-primary"
+                >
+                    🚀 Découvrir le projet
                 </a>
 
-                <a href="#communaute" class="btn btn-secondary">
-                    💬 Rejoindre la communauté
+                <a
+                    href="https://vrcstudio.freeflarum.com/"
+                    target="_blank"
+                    class="btn btn-secondary"
+                >
+                    💬 Visiter le forum
                 </a>
 
             </div>
@@ -512,134 +672,107 @@
     </div>
 
 
-    <!-- À PROPOS -->
+    <!-- =========================
+         PROJET STICKMAN
+    ========================= -->
 
-    <section id="apropos">
+    <section id="projet">
 
         <div class="section-title">
 
-            <h2>À propos de VRCstudio</h2>
+            <h2>Projet en vedette</h2>
 
             <p>
-                Un espace fait pour apprendre, expérimenter et créer.
+                Un projet communautaire basé sur l'intelligence artificielle.
             </p>
 
         </div>
 
-        <div class="cards">
-
-            <div class="card">
-
-                <div class="icon">💡</div>
-
-                <h3>Apprendre</h3>
-
-                <p>
-                    Découvre de nouvelles technologies et améliore
-                    progressivement tes connaissances en programmation.
-                </p>
-
-            </div>
-
-
-            <div class="card">
-
-                <div class="icon">🛠️</div>
-
-                <h3>Créer</h3>
-
-                <p>
-                    Développe tes propres applications, sites Internet,
-                    jeux et outils.
-                </p>
-
-            </div>
-
-
-            <div class="card">
-
-                <div class="icon">🤝</div>
-
-                <h3>Partager</h3>
-
-                <p>
-                    Présente tes projets, échange avec d'autres passionnés
-                    et découvre leurs créations.
-                </p>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- LANGAGES -->
-
-    <section id="langages">
-
-        <div class="section-title">
-
-            <h2>Les langages</h2>
-
-            <p>
-                Des projets dans de nombreux langages de programmation.
-            </p>
-
-        </div>
-
-        <div class="languages">
-
-            <span class="language">🐍 Python</span>
-            <span class="language">🌐 HTML</span>
-            <span class="language">🎨 CSS</span>
-            <span class="language">⚡ JavaScript</span>
-            <span class="language">☕ Java</span>
-            <span class="language">⚙️ C</span>
-            <span class="language">🔧 C++</span>
-            <span class="language">#️⃣ C#</span>
-            <span class="language">🦀 Rust</span>
-            <span class="language">🐘 PHP</span>
-            <span class="language">💎 Ruby</span>
-            <span class="language">🟦 TypeScript</span>
-
-        </div>
-
-    </section>
-
-
-    <!-- PROJETS -->
-
-    <section id="projets">
-
-        <div class="section-title">
-
-            <h2>Projets</h2>
-
-            <p>
-                Découvrez les créations présentées sur VRCstudio.
-            </p>
-
-        </div>
 
         <div class="project">
 
-            <div class="project-preview">
-                &lt;/&gt;
+            <div class="project-visual">
+
+                <div class="stickman">
+                    🕴️
+                </div>
+
             </div>
+
 
             <div>
 
-                <h3>Ton prochain projet</h3>
+                <h3>
+                    Stickman Bureau
+                </h3>
 
-                <p>
-                    Cette section peut présenter ton projet principal,
-                    ton application, ton jeu ou n'importe quelle création
-                    que tu souhaites partager.
+                <p class="project-description">
+
+                    Stickman Bureau est un projet visant à créer un
+                    Stickman contrôlé par une intelligence artificielle
+                    grâce à une API.
+
+                    Il se balade directement sur le bureau de
+                    l'utilisateur et possède différentes humeurs,
+                    émotions et ressentis.
+
                 </p>
 
-                <a href="#" class="btn btn-primary">
-                    Voir le projet →
+
+                <ul class="features">
+
+                    <li>
+                        Stickman contrôlé par une IA
+                    </li>
+
+                    <li>
+                        Humeurs et émotions
+                    </li>
+
+                    <li>
+                        Interaction avec le bureau
+                    </li>
+
+                    <li>
+                        Aide dans les tâches informatiques
+                    </li>
+
+                    <li>
+                        Commandes exécutées grâce à l'IA
+                    </li>
+
+                    <li>
+                        Windows obligatoire
+                    </li>
+
+                    <li>
+                        Mac et Linux facultatifs
+                    </li>
+
+                </ul>
+
+
+                <div class="reward">
+
+                    🏆 <strong>Récompense :</strong>
+
+                    Les personnes qui réaliseront une version
+                    fonctionnelle et complète du projet sur Windows
+                    recevront
+
+                    <strong>1000 VTS</strong>.
+
+                </div>
+
+                <br>
+
+
+                <a
+                    href="https://vrcstudio.freeflarum.com/d/33/"
+                    target="_blank"
+                    class="btn btn-primary"
+                >
+                    📖 Voir l'annonce complète
                 </a>
 
             </div>
@@ -649,23 +782,207 @@
     </section>
 
 
-    <!-- COMMUNAUTÉ -->
+    <!-- =========================
+         EXEMPLES
+    ========================= -->
+
+    <section>
+
+        <div class="section-title">
+
+            <h2>Ce que Stickman Bureau pourrait faire</h2>
+
+            <p>
+                Des commandes données directement depuis une conversation.
+            </p>
+
+        </div>
+
+
+        <div class="cards">
+
+            <div class="card">
+
+                <div class="card-icon">
+                    💬
+                </div>
+
+                <h3>
+                    Commandes naturelles
+                </h3>
+
+                <p>
+                    L'utilisateur peut donner des instructions
+                    à l'IA sous forme de phrases naturelles.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="card-icon">
+                    📁
+                </div>
+
+                <h3>
+                    Gestion des fichiers
+                </h3>
+
+                <p>
+                    Le projet doit pouvoir effectuer des opérations
+                    sur les fichiers et dossiers selon les commandes
+                    autorisées.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="card-icon">
+                    🌐
+                </div>
+
+                <h3>
+                    Applications
+                </h3>
+
+                <p>
+                    Stickman Bureau pourrait notamment ouvrir
+                    des navigateurs et d'autres applications.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="card-icon">
+                    ❤️
+                </div>
+
+                <h3>
+                    Émotions
+                </h3>
+
+                <p>
+                    Le Stickman possède différentes humeurs,
+                    émotions et ressentis pour rendre l'expérience
+                    plus vivante.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         VTS
+    ========================= -->
+
+    <section id="vts">
+
+        <div class="section-title">
+
+            <h2>Le système VTS</h2>
+
+            <p>
+                La monnaie utilisée au sein de VRCstudio.
+            </p>
+
+        </div>
+
+
+        <div class="vts-box">
+
+            <h3>
+                💰 VTS — VRCstudio
+            </h3>
+
+            <p>
+
+                Les VTS constituent la monnaie du forum.
+                Ils permettent notamment d'obtenir certains projets
+                et différents éléments proposés par la communauté.
+
+            </p>
+
+            <p>
+
+                Pour le travail communautaire, la règle indiquée
+                sur le forum est de
+
+                <strong>100 VTS par journée de travail</strong>,
+                soit
+
+                <strong>5 VTS par heure</strong>.
+
+            </p>
+
+
+            <div class="vts-rules">
+
+                <div class="vts-rule">
+
+                    <strong>100 VTS</strong>
+
+                    1 journée de travail
+
+                </div>
+
+
+                <div class="vts-rule">
+
+                    <strong>5 VTS</strong>
+
+                    1 heure de travail
+
+                </div>
+
+
+                <div class="vts-rule">
+
+                    <strong>1000 VTS</strong>
+
+                    Récompense annoncée pour Stickman Bureau
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         COMMUNAUTÉ
+    ========================= -->
 
     <section id="communaute">
 
         <div class="community">
 
-            <h2>Rejoins VRCstudio</h2>
+            <h2>
+                Rejoins VRCstudio
+            </h2>
 
             <p>
-                Une communauté où les passionnés peuvent discuter,
-                présenter leurs projets, poser leurs questions et
-                apprendre ensemble.
+
+                Participe aux projets, présente tes créations,
+                pose tes questions et échange avec les autres
+                membres de la communauté.
+
             </p>
 
-            <!-- Remplace # par l'adresse de ton forum -->
-
-            <a href="#" class="btn btn-primary">
+            <a
+                href="https://vrcstudio.freeflarum.com/"
+                target="_blank"
+                class="btn btn-primary"
+            >
                 💬 Accéder au forum
             </a>
 
@@ -673,22 +990,65 @@
 
     </section>
 
+
+    <!-- =========================
+         CONTACT
+    ========================= -->
+
+    <section class="contact">
+
+        <div class="section-title">
+
+            <h2>
+                Une question ?
+            </h2>
+
+        </div>
+
+        <p>
+            Pour les questions concernant Stickman Bureau,
+            contactez
+            <span class="mention">@VRC</span>
+            sur le forum.
+        </p>
+
+        <a
+            href="https://vrcstudio.freeflarum.com/u/VRC"
+            target="_blank"
+            class="btn btn-secondary"
+        >
+            👤 Contacter @VRC
+        </a>
+
+    </section>
+
 </main>
 
+
+<!-- =========================
+     FOOTER
+========================= -->
 
 <footer>
 
     <p>
+
         © <span id="year"></span>
-        <strong>VRCstudio</strong> — Tous droits réservés.
+
+        <strong>VRCstudio</strong>
+
+        — Communauté de programmation & projets IA.
+
     </p>
 
 </footer>
 
 
 <script>
+
     document.getElementById("year").textContent =
         new Date().getFullYear();
+
 </script>
 
 </body>
