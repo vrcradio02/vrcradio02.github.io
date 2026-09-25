@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1044,11 +1045,56 @@
 
 
 <script>
+    // =========================
+    // SUPABASE
+    // =========================
+
+    const SUPABASE_URL = "https://xbxwxkgcfbkhiavthrvn.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_cdrtTS0MsLcD8PTDzOAtAA_syW3t4SJ";
+
+    const supabaseClient = window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+
+    // =========================
+    // ANNÉE
+    // =========================
 
     document.getElementById("year").textContent =
         new Date().getFullYear();
 
-</script>
 
+    // =========================
+    // TEST DE CONNEXION
+    // =========================
+
+    async function testSupabase() {
+
+        const { data, error } =
+            await supabaseClient
+                .from("projects")
+                .select("*");
+
+        if (error) {
+
+            console.error(
+                "Erreur Supabase :",
+                error
+            );
+
+            return;
+        }
+
+        console.log(
+            "Connexion Supabase réussie !",
+            data
+        );
+    }
+
+
+    testSupabase();
+</script>
 </body>
 </html>
