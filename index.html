@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="fr">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,164 +7,381 @@
     <title>VRCstudio — Projets, IA & programmation</title>
 
     <meta name="description"
-          content="VRCstudio : communauté de programmation, projets IA et créations informatiques. Découvrez Stickman Bureau et participez aux projets.">
+          content="VRCstudio : communauté de programmation, projets IA et créations informatiques.">
 
     <meta name="keywords"
-          content="VRCstudio, programmation, IA, intelligence artificielle, Stickman Bureau, Python, projets, développement">
+          content="VRCstudio, programmation, IA, intelligence artificielle, Python, projets, développement">
+
+    <!-- =========================
+         SUPABASE
+    ========================== -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
+
+        /* =========================
+           VARIABLES
+        ========================== */
+
+        :root {
+            --background: #070914;
+            --background-secondary: #0c1020;
+
+            --purple: #756cff;
+            --purple-light: #918aff;
+
+            --cyan: #35d8ff;
+
+            --green: #63e6a6;
+
+            --white: #ffffff;
+
+            --text: #f7f8ff;
+            --text-secondary: #aab2ce;
+
+            --border: rgba(255,255,255,.10);
+
+            --card: rgba(255,255,255,.045);
+        }
+
+
+        /* =========================
+           RESET
+        ========================== */
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+
         html {
             scroll-behavior: smooth;
         }
 
+
         body {
-            font-family: Arial, Helvetica, sans-serif;
-            background: #080b16;
-            color: #fff;
+
+            font-family:
+                Inter,
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            color: var(--text);
+
             line-height: 1.6;
+
+            background:
+
+                radial-gradient(
+                    circle at 10% 5%,
+                    rgba(117,108,255,.16),
+                    transparent 28%
+                ),
+
+                radial-gradient(
+                    circle at 90% 35%,
+                    rgba(53,216,255,.08),
+                    transparent 28%
+                ),
+
+                var(--background);
+
+            overflow-x: hidden;
         }
+
+
+        /* grille de fond */
+
+        body::before {
+
+            content: "";
+
+            position: fixed;
+
+            inset: 0;
+
+            pointer-events: none;
+
+            opacity: .16;
+
+            background-image:
+
+                linear-gradient(
+                    rgba(255,255,255,.025) 1px,
+                    transparent 1px
+                ),
+
+                linear-gradient(
+                    90deg,
+                    rgba(255,255,255,.025) 1px,
+                    transparent 1px
+                );
+
+            background-size: 45px 45px;
+
+            mask-image:
+                linear-gradient(
+                    to bottom,
+                    #000,
+                    transparent 80%
+                );
+        }
+
 
         a {
             color: inherit;
             text-decoration: none;
         }
 
+
+        button {
+            font-family: inherit;
+        }
+
+
+        .container {
+
+            max-width: 1200px;
+
+            margin: auto;
+
+            padding-left: 25px;
+            padding-right: 25px;
+        }
+
+
         /* =========================
-           NAVIGATION
-        ========================= */
+           HEADER
+        ========================== */
 
         header {
+
             position: fixed;
+
             top: 0;
             left: 0;
             right: 0;
+
             z-index: 1000;
 
-            background: rgba(8, 11, 22, 0.88);
-            backdrop-filter: blur(15px);
+            background:
+                rgba(7,9,20,.72);
 
-            border-bottom: 1px solid rgba(255,255,255,0.08);
+            backdrop-filter:
+                blur(18px);
+
+            border-bottom:
+                1px solid var(--border);
         }
 
+
         nav {
-            max-width: 1200px;
+
             height: 72px;
 
-            margin: auto;
-            padding: 0 25px;
-
             display: flex;
+
             align-items: center;
+
             justify-content: space-between;
         }
 
+
         .logo {
+
             font-size: 25px;
+
             font-weight: 900;
+
             letter-spacing: 1px;
         }
 
+
         .logo span {
-            color: #756cff;
+
+            color: var(--purple);
         }
 
+
         .nav-links {
+
             display: flex;
-            gap: 25px;
+
+            align-items: center;
+
+            gap: 24px;
+
             list-style: none;
         }
 
+
         .nav-links a {
+
             color: #cbd0e8;
-            font-weight: 600;
+
+            font-weight: 700;
+
             transition: .25s;
         }
 
+
         .nav-links a:hover {
-            color: #8078ff;
+
+            color: white;
+
+            transform: translateY(-1px);
         }
+
+
+        .nav-cta {
+
+            padding:
+                9px 15px;
+
+            border:
+                1px solid
+                rgba(117,108,255,.35);
+
+            border-radius: 10px;
+        }
+
+
+        .menu-button {
+
+            display: none;
+
+            border: 1px solid var(--border);
+
+            background: rgba(255,255,255,.05);
+
+            color: white;
+
+            padding: 9px 12px;
+
+            border-radius: 10px;
+
+            cursor: pointer;
+
+            font-size: 18px;
+        }
+
 
         /* =========================
            HERO
-        ========================= */
+        ========================== */
 
         .hero {
+
             min-height: 100vh;
 
             display: flex;
+
             justify-content: center;
+
             align-items: center;
 
             text-align: center;
 
-            padding: 130px 20px 80px;
+            padding:
+                130px 20px 85px;
 
-            background:
-                radial-gradient(
-                    circle at 20% 25%,
-                    rgba(117,108,255,.25),
-                    transparent 35%
-                ),
-                radial-gradient(
-                    circle at 80% 70%,
-                    rgba(0,200,255,.12),
-                    transparent 35%
-                );
+            position: relative;
         }
 
+
         .hero-content {
+
             max-width: 900px;
         }
 
-        .badge {
-            display: inline-block;
 
-            padding: 8px 17px;
+        .badge {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 9px;
+
+            padding:
+                8px 16px;
 
             border-radius: 999px;
 
-            background: rgba(117,108,255,.1);
+            background:
+                rgba(117,108,255,.10);
 
-            border: 1px solid rgba(117,108,255,.4);
+            border:
+                1px solid
+                rgba(117,108,255,.35);
 
-            color: #c5c0ff;
+            color: #d2ceff;
 
             margin-bottom: 25px;
 
             font-size: 14px;
+
+            font-weight: 700;
         }
 
+
+        .status-dot {
+
+            width: 8px;
+            height: 8px;
+
+            border-radius: 50%;
+
+            background:
+                var(--green);
+
+            box-shadow:
+                0 0 12px
+                var(--green);
+        }
+
+
         .hero h1 {
-            font-size: clamp(55px, 10vw, 105px);
+
+            font-size:
+                clamp(
+                    58px,
+                    10vw,
+                    110px
+                );
 
             line-height: 1;
 
-            letter-spacing: -4px;
+            letter-spacing: -5px;
 
             margin-bottom: 25px;
         }
 
+
         .hero h1 span {
-            color: #756cff;
+
+            color: var(--purple);
         }
 
+
         .hero p {
+
             max-width: 720px;
 
             margin: auto;
 
-            color: #aeb6d2;
+            color: var(--text-secondary);
 
             font-size: 20px;
         }
 
+
         .buttons {
+
             margin-top: 35px;
 
             display: flex;
@@ -177,79 +393,175 @@
             flex-wrap: wrap;
         }
 
+
         .btn {
-            display: inline-block;
 
-            padding: 14px 24px;
+            display: inline-flex;
 
-            border-radius: 10px;
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 8px;
+
+            padding:
+                14px 24px;
+
+            border-radius: 11px;
 
             font-weight: 800;
 
             transition: .25s;
+
+            cursor: pointer;
         }
+
+
+        .btn:hover {
+
+            transform:
+                translateY(-3px);
+        }
+
 
         .btn-primary {
-            background: #756cff;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #756cff,
+                    #6259e8
+                );
 
             box-shadow:
-                0 10px 35px rgba(117,108,255,.3);
+                0 12px 35px
+                rgba(117,108,255,.28);
         }
 
-        .btn-primary:hover {
-            transform: translateY(-3px);
-
-            background: #8982ff;
-        }
 
         .btn-secondary {
-            background: rgba(255,255,255,.04);
 
-            border: 1px solid rgba(255,255,255,.12);
+            background:
+                rgba(255,255,255,.045);
+
+            border:
+                1px solid
+                var(--border);
         }
 
-        .btn-secondary:hover {
-            transform: translateY(-3px);
 
-            background: rgba(255,255,255,.08);
+        /* =========================
+           STATS
+        ========================== */
+
+        .stats {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3,1fr);
+
+            gap: 14px;
+
+            max-width: 700px;
+
+            margin:
+                55px auto 0;
         }
+
+
+        .stat {
+
+            padding: 18px;
+
+            border:
+                1px solid
+                var(--border);
+
+            background:
+                rgba(255,255,255,.035);
+
+            border-radius: 15px;
+
+            transition: .3s;
+        }
+
+
+        .stat:hover {
+
+            transform:
+                translateY(-5px);
+
+            border-color:
+                rgba(117,108,255,.3);
+        }
+
+
+        .stat strong {
+
+            display: block;
+
+            font-size: 24px;
+        }
+
+
+        .stat span {
+
+            color:
+                #8f98b5;
+
+            font-size: 13px;
+        }
+
 
         /* =========================
            SECTIONS
-        ========================= */
+        ========================== */
 
         section {
+
             max-width: 1200px;
 
             margin: auto;
 
-            padding: 100px 25px;
+            padding:
+                100px 25px;
         }
+
 
         .section-title {
+
             text-align: center;
 
-            margin-bottom: 55px;
+            margin-bottom: 48px;
         }
 
+
         .section-title h2 {
+
             font-size: 42px;
 
             margin-bottom: 10px;
         }
 
+
         .section-title p {
-            color: #939cb9;
+
+            color:
+                #939cb9;
         }
 
+
         /* =========================
-           PROJET PRINCIPAL
-        ========================= */
+           PROJECT
+        ========================== */
 
         .project {
+
             display: grid;
 
-            grid-template-columns: 1fr 1.2fr;
+            grid-template-columns:
+                1fr 1.2fr;
 
             gap: 40px;
 
@@ -257,19 +569,28 @@
 
             padding: 35px;
 
-            border-radius: 24px;
+            border-radius: 25px;
 
             background:
+
                 linear-gradient(
                     135deg,
-                    rgba(117,108,255,.15),
-                    rgba(0,200,255,.04)
+                    rgba(117,108,255,.14),
+                    rgba(53,216,255,.035)
                 );
 
-            border: 1px solid rgba(255,255,255,.09);
+            border:
+                1px solid
+                var(--border);
+
+            box-shadow:
+                0 25px 80px
+                rgba(0,0,0,.18);
         }
 
+
         .project-visual {
+
             min-height: 350px;
 
             display: flex;
@@ -283,196 +604,448 @@
             border-radius: 20px;
 
             background:
+
                 radial-gradient(
                     circle,
-                    rgba(117,108,255,.3),
-                    transparent 65%
+                    rgba(117,108,255,.28),
+                    transparent 63%
                 );
 
-            border: 1px solid rgba(255,255,255,.08);
+            border:
+                1px solid
+                var(--border);
+
+            overflow: hidden;
         }
+
+
+        .project-visual::after {
+
+            content: "";
+
+            position: absolute;
+
+            width: 180px;
+            height: 180px;
+
+            border:
+                1px solid
+                rgba(117,108,255,.25);
+
+            border-radius: 50%;
+
+            animation:
+                pulse 4s infinite;
+        }
+
 
         .stickman {
+
             font-size: 140px;
 
-            animation: float 3s ease-in-out infinite;
+            filter:
+                drop-shadow(
+                    0 15px 25px
+                    rgba(117,108,255,.3)
+                );
+
+            animation:
+                float 3s
+                ease-in-out
+                infinite;
+
+            z-index: 1;
         }
+
 
         @keyframes float {
 
-            0%, 100% {
-                transform: translateY(0);
+            0%,100% {
+                transform:
+                    translateY(0);
             }
 
             50% {
-                transform: translateY(-15px);
+                transform:
+                    translateY(-15px);
             }
-
         }
 
+
+        @keyframes pulse {
+
+            0%,100% {
+
+                transform:
+                    scale(.85);
+
+                opacity: .3;
+            }
+
+            50% {
+
+                transform:
+                    scale(1.15);
+
+                opacity: .8;
+            }
+        }
+
+
         .project h3 {
+
             font-size: 34px;
 
             margin-bottom: 15px;
         }
 
+
         .project-description {
-            color: #b2bad3;
+
+            color:
+                #b2bad3;
 
             margin-bottom: 20px;
         }
 
+
         .features {
+
             list-style: none;
 
             margin: 20px 0;
         }
 
+
         .features li {
+
             margin-bottom: 10px;
 
-            color: #d8dcef;
+            color:
+                #d8dcef;
         }
+
 
         .features li::before {
-            content: "✓";
 
-            color: #8078ff;
+            content:
+                "✓";
 
-            font-weight: bold;
+            color:
+                #8078ff;
 
-            margin-right: 10px;
+            font-weight:
+                bold;
+
+            margin-right:
+                10px;
         }
 
-        /* =========================
-           RECOMPENSE
-        ========================= */
 
         .reward {
+
             margin-top: 25px;
 
             padding: 20px;
 
             border-radius: 14px;
 
-            background: rgba(255,255,255,.04);
+            background:
+                rgba(255,255,255,.04);
 
-            border: 1px solid rgba(255,255,255,.08);
+            border:
+                1px solid
+                var(--border);
         }
+
 
         .reward strong {
-            color: #9a93ff;
+
+            color:
+                #9a93ff;
         }
+
+
+        /* =========================
+           CARDS
+        ========================== */
+
+        .cards {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(
+                    auto-fit,
+                    minmax(250px,1fr)
+                );
+
+            gap: 20px;
+        }
+
+
+        .card {
+
+            padding: 28px;
+
+            border-radius: 18px;
+
+            background:
+                var(--card);
+
+            border:
+                1px solid
+                var(--border);
+
+            transition: .3s;
+
+            position: relative;
+
+            overflow: hidden;
+        }
+
+
+        .card::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 140px;
+
+            height: 140px;
+
+            top: -80px;
+
+            left: -80px;
+
+            background:
+                rgba(117,108,255,.12);
+
+            filter:
+                blur(35px);
+        }
+
+
+        .card:hover {
+
+            transform:
+                translateY(-7px);
+
+            border-color:
+                rgba(117,108,255,.35);
+        }
+
+
+        .card-icon {
+
+            font-size: 36px;
+
+            margin-bottom: 13px;
+        }
+
+
+        .card h3 {
+
+            font-size: 21px;
+
+            margin-bottom: 9px;
+        }
+
+
+        .card p {
+
+            color:
+                #a7afc9;
+        }
+
+
+        /* =========================
+           NEWS
+        ========================== */
+
+        .news-panel {
+
+            padding: 30px;
+
+            border-radius: 22px;
+
+            background:
+                rgba(255,255,255,.04);
+
+            border:
+                1px solid
+                var(--border);
+        }
+
+
+        .news-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(
+                    auto-fit,
+                    minmax(270px,1fr)
+                );
+
+            gap: 18px;
+        }
+
+
+        .news-card {
+
+            padding: 24px;
+
+            border-radius: 17px;
+
+            background:
+                rgba(255,255,255,.045);
+
+            border:
+                1px solid
+                var(--border);
+
+            transition: .3s;
+        }
+
+
+        .news-card:hover {
+
+            transform:
+                translateY(-5px);
+
+            border-color:
+                rgba(117,108,255,.3);
+        }
+
+
+        .news-date {
+
+            font-size: 12px;
+
+            color:
+                #8179ff;
+
+            font-weight:
+                800;
+
+            margin-bottom: 8px;
+        }
+
+
+        .news-card h3 {
+
+            margin-bottom: 8px;
+
+            font-size: 21px;
+        }
+
+
+        .news-card p {
+
+            color:
+                var(--text-secondary);
+        }
+
+
+        .loading {
+
+            text-align: center;
+
+            color:
+                var(--text-secondary);
+
+            padding: 25px;
+        }
+
 
         /* =========================
            VTS
-        ========================= */
+        ========================== */
 
         .vts-box {
+
             padding: 35px;
 
-            border-radius: 20px;
+            border-radius: 22px;
 
-            background: rgba(255,255,255,.04);
+            background:
+                rgba(255,255,255,.04);
 
-            border: 1px solid rgba(255,255,255,.08);
+            border:
+                1px solid
+                var(--border);
         }
 
+
         .vts-box h3 {
+
             font-size: 27px;
 
             margin-bottom: 15px;
         }
 
+
         .vts-box p {
-            color: #aeb6d0;
+
+            color:
+                #aeb6d0;
 
             margin-bottom: 15px;
         }
 
+
         .vts-rules {
+
             display: grid;
 
             grid-template-columns:
-                repeat(auto-fit, minmax(220px, 1fr));
+                repeat(
+                    auto-fit,
+                    minmax(220px,1fr)
+                );
 
             gap: 15px;
 
             margin-top: 25px;
         }
 
+
         .vts-rule {
+
             padding: 20px;
 
             border-radius: 14px;
 
-            background: rgba(117,108,255,.07);
+            background:
+                rgba(117,108,255,.07);
 
-            border: 1px solid rgba(117,108,255,.15);
+            border:
+                1px solid
+                rgba(117,108,255,.15);
         }
 
+
         .vts-rule strong {
+
             display: block;
 
             font-size: 25px;
 
             margin-bottom: 5px;
 
-            color: #8179ff;
+            color:
+                #8179ff;
         }
+
 
         /* =========================
-           VALEURS
-        ========================= */
-
-        .cards {
-            display: grid;
-
-            grid-template-columns:
-                repeat(auto-fit, minmax(250px, 1fr));
-
-            gap: 20px;
-        }
-
-        .card {
-            padding: 30px;
-
-            border-radius: 18px;
-
-            background: rgba(255,255,255,.04);
-
-            border: 1px solid rgba(255,255,255,.08);
-
-            transition: .3s;
-        }
-
-        .card:hover {
-            transform: translateY(-7px);
-
-            border-color: rgba(117,108,255,.35);
-        }
-
-        .card-icon {
-            font-size: 38px;
-
-            margin-bottom: 15px;
-        }
-
-        .card h3 {
-            font-size: 22px;
-
-            margin-bottom: 10px;
-        }
-
-        .card p {
-            color: #a7afc9;
-        }
-
-        /* =========================
-           COMMUNAUTÉ
-        ========================= */
+           COMMUNITY
+        ========================== */
 
         .community {
+
             text-align: center;
 
             padding: 70px 25px;
@@ -480,141 +1053,272 @@
             border-radius: 25px;
 
             background:
+
                 linear-gradient(
                     135deg,
-                    rgba(117,108,255,.18),
-                    rgba(0,200,255,.07)
+                    rgba(117,108,255,.17),
+                    rgba(53,216,255,.06)
                 );
 
-            border: 1px solid rgba(255,255,255,.1);
+            border:
+                1px solid
+                var(--border);
         }
 
+
         .community h2 {
+
             font-size: 42px;
 
             margin-bottom: 15px;
         }
 
+
         .community p {
+
             max-width: 700px;
 
-            margin: 0 auto 30px;
+            margin:
+                0 auto 30px;
 
-            color: #adb5d0;
+            color:
+                #adb5d0;
         }
+
 
         /* =========================
            CONTACT
-        ========================= */
+        ========================== */
 
         .contact {
+
             text-align: center;
         }
 
+
         .contact p {
-            color: #aab2cc;
+
+            color:
+                #aab2cc;
 
             margin-bottom: 20px;
         }
 
-        .mention {
-            color: #8179ff;
 
-            font-weight: bold;
+        .mention {
+
+            color:
+                #8179ff;
+
+            font-weight:
+                bold;
         }
+
+
+        /* =========================
+           STATUS
+        ========================== */
+
+        #connection-status {
+
+            margin-top: 25px;
+
+            font-size: 13px;
+
+            color:
+                #7f89a8;
+        }
+
 
         /* =========================
            FOOTER
-        ========================= */
+        ========================== */
 
         footer {
-            padding: 35px 20px;
+
+            padding:
+                35px 20px;
 
             text-align: center;
 
-            color: #737b97;
+            color:
+                #737b97;
 
-            border-top: 1px solid rgba(255,255,255,.08);
+            border-top:
+                1px solid
+                var(--border);
         }
+
 
         footer strong {
-            color: white;
+
+            color:
+                white;
         }
+
 
         /* =========================
            MOBILE
-        ========================= */
+        ========================== */
 
-        @media(max-width: 800px) {
+        @media(max-width:800px) {
 
             .nav-links {
+
                 display: none;
+
+                position: absolute;
+
+                top: 72px;
+
+                left: 15px;
+                right: 15px;
+
+                flex-direction: column;
+
+                padding: 20px;
+
+                background:
+                    rgba(8,11,22,.97);
+
+                border:
+                    1px solid
+                    var(--border);
+
+                border-radius: 15px;
             }
+
+
+            .nav-links.open {
+
+                display: flex;
+            }
+
+
+            .menu-button {
+
+                display: block;
+            }
+
 
             .hero h1 {
-                letter-spacing: -2px;
+
+                letter-spacing:
+                    -3px;
             }
 
+
             .hero p {
+
                 font-size: 17px;
             }
 
-            section {
-                padding: 75px 20px;
+
+            .stats {
+
+                grid-template-columns:
+                    1fr;
             }
+
+
+            section {
+
+                padding:
+                    75px 20px;
+            }
+
 
             .project {
-                grid-template-columns: 1fr;
+
+                grid-template-columns:
+                    1fr;
             }
+
 
             .project-visual {
-                min-height: 250px;
+
+                min-height:
+                    250px;
             }
 
+
             .stickman {
-                font-size: 100px;
+
+                font-size:
+                    100px;
             }
+
 
             .section-title h2,
             .community h2 {
-                font-size: 34px;
-            }
 
+                font-size:
+                    34px;
+            }
         }
+
     </style>
 </head>
 
 
 <body>
 
+
 <!-- =========================
-     NAVIGATION
+     HEADER
 ========================= -->
 
 <header>
 
-    <nav>
+    <nav class="container">
 
         <a href="#accueil" class="logo">
             VRC<span>studio</span>
         </a>
 
-        <ul class="nav-links">
+
+        <button
+            class="menu-button"
+            id="menu-button"
+            aria-label="Ouvrir le menu"
+        >
+            ☰
+        </button>
+
+
+        <ul class="nav-links" id="nav-links">
 
             <li>
-                <a href="#accueil">Accueil</a>
+                <a href="#accueil">
+                    Accueil
+                </a>
             </li>
 
             <li>
-                <a href="#projet">Projet</a>
+                <a href="#projet">
+                    Projet
+                </a>
             </li>
 
             <li>
-                <a href="#vts">VTS</a>
+                <a href="#actualites">
+                    Actualités
+                </a>
             </li>
 
             <li>
-                <a href="#communaute">Communauté</a>
+                <a href="#vts">
+                    VTS
+                </a>
+            </li>
+
+            <li>
+                <a
+                    href="#communaute"
+                    class="nav-cta"
+                >
+                    Communauté
+                </a>
             </li>
 
         </ul>
@@ -624,46 +1328,109 @@
 </header>
 
 
+
 <!-- =========================
-     ACCUEIL
+     MAIN
 ========================= -->
 
 <main>
 
-    <div class="hero" id="accueil">
 
-        <div class="hero-content">
+<!-- =========================
+     HERO
+========================= -->
 
-            <div class="badge">
-                🤖 IA • 💻 Programmation • 👥 Communauté
+<div
+    class="hero"
+    id="accueil"
+>
+
+    <div class="hero-content">
+
+        <div class="badge">
+
+            <span class="status-dot"></span>
+
+            IA • Programmation • Communauté
+
+        </div>
+
+
+        <h1>
+            VRC<span>studio</span>
+        </h1>
+
+
+        <p>
+
+            Une communauté dédiée aux projets informatiques,
+            à la programmation et à la création de nouvelles
+            expériences grâce à l'intelligence artificielle.
+
+        </p>
+
+
+        <div class="buttons">
+
+            <a
+                href="#projet"
+                class="btn btn-primary"
+            >
+                🚀 Découvrir le projet
+            </a>
+
+
+            <a
+                href="https://vrcstudio.freeflarum.com/"
+                target="_blank"
+                rel="noopener"
+                class="btn btn-secondary"
+            >
+                💬 Visiter le forum
+            </a>
+
+        </div>
+
+
+        <!-- COMPTEURS -->
+
+        <div class="stats">
+
+            <div class="stat">
+
+                <strong id="project-count">
+                    —
+                </strong>
+
+                <span>
+                    projets
+                </span>
+
             </div>
 
-            <h1>
-                VRC<span>studio</span>
-            </h1>
 
-            <p>
-                Une communauté dédiée aux projets informatiques,
-                à la programmation et à la création de nouvelles
-                expériences grâce à l'intelligence artificielle.
-            </p>
+            <div class="stat">
 
-            <div class="buttons">
+                <strong id="news-count">
+                    —
+                </strong>
 
-                <a
-                    href="#projet"
-                    class="btn btn-primary"
-                >
-                    🚀 Découvrir le projet
-                </a>
+                <span>
+                    actualités
+                </span>
 
-                <a
-                    href="https://vrcstudio.freeflarum.com/"
-                    target="_blank"
-                    class="btn btn-secondary"
-                >
-                    💬 Visiter le forum
-                </a>
+            </div>
+
+
+            <div class="stat">
+
+                <strong>
+                    1000 VTS
+                </strong>
+
+                <span>
+                    récompense annoncée
+                </span>
 
             </div>
 
@@ -671,358 +1438,459 @@
 
     </div>
 
-
-    <!-- =========================
-         PROJET STICKMAN
-    ========================= -->
-
-    <section id="projet">
-
-        <div class="section-title">
-
-            <h2>Projet en vedette</h2>
-
-            <p>
-                Un projet communautaire basé sur l'intelligence artificielle.
-            </p>
-
-        </div>
+</div>
 
 
-        <div class="project">
 
-            <div class="project-visual">
+<!-- =========================
+     PROJET
+========================= -->
 
-                <div class="stickman">
-                    🕴️
-                </div>
+<section id="projet">
 
-            </div>
+    <div class="section-title">
 
+        <h2>
+            Projet en vedette
+        </h2>
 
-            <div>
+        <p>
+            Un projet communautaire basé sur l'intelligence artificielle.
+        </p>
 
-                <h3>
-                    Stickman Bureau
-                </h3>
-
-                <p class="project-description">
-
-                    Stickman Bureau est un projet visant à créer un
-                    Stickman contrôlé par une intelligence artificielle
-                    grâce à une API.
-
-                    Il se balade directement sur le bureau de
-                    l'utilisateur et possède différentes humeurs,
-                    émotions et ressentis.
-
-                </p>
+    </div>
 
 
-                <ul class="features">
-
-                    <li>
-                        Stickman contrôlé par une IA
-                    </li>
-
-                    <li>
-                        Humeurs et émotions
-                    </li>
-
-                    <li>
-                        Interaction avec le bureau
-                    </li>
-
-                    <li>
-                        Aide dans les tâches informatiques
-                    </li>
-
-                    <li>
-                        Commandes exécutées grâce à l'IA
-                    </li>
-
-                    <li>
-                        Windows obligatoire
-                    </li>
-
-                    <li>
-                        Mac et Linux facultatifs
-                    </li>
-
-                </ul>
+    <div class="project">
 
 
-                <div class="reward">
+        <div class="project-visual">
 
-                    🏆 <strong>Récompense :</strong>
-
-                    Les personnes qui réaliseront une version
-                    fonctionnelle et complète du projet sur Windows
-                    recevront
-
-                    <strong>1000 VTS</strong>.
-
-                </div>
-
-                <br>
-
-
-                <a
-                    href="https://vrcstudio.freeflarum.com/d/33/"
-                    target="_blank"
-                    class="btn btn-primary"
-                >
-                    📖 Voir l'annonce complète
-                </a>
-
+            <div class="stickman">
+                🕴️
             </div>
 
         </div>
 
-    </section>
 
-
-    <!-- =========================
-         EXEMPLES
-    ========================= -->
-
-    <section>
-
-        <div class="section-title">
-
-            <h2>Ce que Stickman Bureau pourrait faire</h2>
-
-            <p>
-                Des commandes données directement depuis une conversation.
-            </p>
-
-        </div>
-
-
-        <div class="cards">
-
-            <div class="card">
-
-                <div class="card-icon">
-                    💬
-                </div>
-
-                <h3>
-                    Commandes naturelles
-                </h3>
-
-                <p>
-                    L'utilisateur peut donner des instructions
-                    à l'IA sous forme de phrases naturelles.
-                </p>
-
-            </div>
-
-
-            <div class="card">
-
-                <div class="card-icon">
-                    📁
-                </div>
-
-                <h3>
-                    Gestion des fichiers
-                </h3>
-
-                <p>
-                    Le projet doit pouvoir effectuer des opérations
-                    sur les fichiers et dossiers selon les commandes
-                    autorisées.
-                </p>
-
-            </div>
-
-
-            <div class="card">
-
-                <div class="card-icon">
-                    🌐
-                </div>
-
-                <h3>
-                    Applications
-                </h3>
-
-                <p>
-                    Stickman Bureau pourrait notamment ouvrir
-                    des navigateurs et d'autres applications.
-                </p>
-
-            </div>
-
-
-            <div class="card">
-
-                <div class="card-icon">
-                    ❤️
-                </div>
-
-                <h3>
-                    Émotions
-                </h3>
-
-                <p>
-                    Le Stickman possède différentes humeurs,
-                    émotions et ressentis pour rendre l'expérience
-                    plus vivante.
-                </p>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- =========================
-         VTS
-    ========================= -->
-
-    <section id="vts">
-
-        <div class="section-title">
-
-            <h2>Le système VTS</h2>
-
-            <p>
-                La monnaie utilisée au sein de VRCstudio.
-            </p>
-
-        </div>
-
-
-        <div class="vts-box">
+        <div>
 
             <h3>
-                💰 VTS — VRCstudio
+                Stickman Bureau
             </h3>
 
-            <p>
 
-                Les VTS constituent la monnaie du forum.
-                Ils permettent notamment d'obtenir certains projets
-                et différents éléments proposés par la communauté.
+            <p class="project-description">
 
-            </p>
+                Stickman Bureau est un projet visant à créer
+                un Stickman contrôlé par une intelligence artificielle
+                grâce à une API.
 
-            <p>
-
-                Pour le travail communautaire, la règle indiquée
-                sur le forum est de
-
-                <strong>100 VTS par journée de travail</strong>,
-                soit
-
-                <strong>5 VTS par heure</strong>.
+                Il se balade directement sur le bureau de
+                l'utilisateur et possède différentes humeurs,
+                émotions et ressentis.
 
             </p>
 
 
-            <div class="vts-rules">
+            <ul class="features">
 
-                <div class="vts-rule">
+                <li>
+                    Stickman contrôlé par une IA
+                </li>
 
-                    <strong>100 VTS</strong>
+                <li>
+                    Humeurs et émotions
+                </li>
 
-                    1 journée de travail
+                <li>
+                    Interaction avec le bureau
+                </li>
 
-                </div>
+                <li>
+                    Aide dans les tâches informatiques
+                </li>
+
+                <li>
+                    Commandes exécutées grâce à l'IA
+                </li>
+
+                <li>
+                    Windows obligatoire
+                </li>
+
+                <li>
+                    Mac et Linux facultatifs
+                </li>
+
+            </ul>
 
 
-                <div class="vts-rule">
+            <div class="reward">
 
-                    <strong>5 VTS</strong>
+                🏆 <strong>Récompense :</strong>
 
-                    1 heure de travail
+                une version fonctionnelle et complète du projet
+                sur Windows est annoncée à
 
-                </div>
-
-
-                <div class="vts-rule">
-
-                    <strong>1000 VTS</strong>
-
-                    Récompense annoncée pour Stickman Bureau
-
-                </div>
+                <strong>
+                    1000 VTS
+                </strong>.
 
             </div>
 
-        </div>
 
-    </section>
+            <br>
 
-
-    <!-- =========================
-         COMMUNAUTÉ
-    ========================= -->
-
-    <section id="communaute">
-
-        <div class="community">
-
-            <h2>
-                Rejoins VRCstudio
-            </h2>
-
-            <p>
-
-                Participe aux projets, présente tes créations,
-                pose tes questions et échange avec les autres
-                membres de la communauté.
-
-            </p>
 
             <a
-                href="https://vrcstudio.freeflarum.com/"
+                href="https://vrcstudio.freeflarum.com/d/33/"
                 target="_blank"
+                rel="noopener"
                 class="btn btn-primary"
             >
-                💬 Accéder au forum
+                📖 Voir l'annonce complète
             </a>
 
         </div>
 
-    </section>
+    </div>
+
+</section>
 
 
-    <!-- =========================
-         CONTACT
-    ========================= -->
 
-    <section class="contact">
+<!-- =========================
+     CAPACITÉS
+========================= -->
 
-        <div class="section-title">
+<section>
 
-            <h2>
-                Une question ?
-            </h2>
+    <div class="section-title">
+
+        <h2>
+            Ce que Stickman Bureau pourrait faire
+        </h2>
+
+        <p>
+            Des commandes données directement depuis une conversation.
+        </p>
+
+    </div>
+
+
+    <div class="cards">
+
+
+        <div class="card">
+
+            <div class="card-icon">
+                💬
+            </div>
+
+            <h3>
+                Commandes naturelles
+            </h3>
+
+            <p>
+                L'utilisateur peut donner des instructions
+                à l'IA sous forme de phrases naturelles.
+            </p>
 
         </div>
 
+
+        <div class="card">
+
+            <div class="card-icon">
+                📁
+            </div>
+
+            <h3>
+                Gestion des fichiers
+            </h3>
+
+            <p>
+                Effectuer des opérations sur les fichiers
+                et dossiers selon les commandes autorisées.
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-icon">
+                🌐
+            </div>
+
+            <h3>
+                Applications
+            </h3>
+
+            <p>
+                Ouvrir des navigateurs et d'autres applications
+                depuis les commandes de l'IA.
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-icon">
+                ❤️
+            </div>
+
+            <h3>
+                Émotions
+            </h3>
+
+            <p>
+                Différentes humeurs, émotions et ressentis
+                pour rendre l'expérience plus vivante.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================
+     ACTUALITÉS SUPABASE
+========================= -->
+
+<section id="actualites">
+
+    <div class="section-title">
+
+        <h2>
+            📰 Actualités
+        </h2>
+
         <p>
-            Pour les questions concernant Stickman Bureau,
-            contactez
-            <span class="mention">@VRC</span>
-            sur le forum.
+            Les informations publiées sur VRCstudio.
         </p>
 
-        <a
-            href="https://vrcstudio.freeflarum.com/u/VRC"
-            target="_blank"
-            class="btn btn-secondary"
+    </div>
+
+
+    <div class="news-panel">
+
+        <div
+            id="news-list"
+            class="news-grid"
         >
-            👤 Contacter @VRC
+
+            <div class="loading">
+                Chargement des actualités…
+            </div>
+
+        </div>
+
+
+        <div style="text-align:center;margin-top:25px;">
+
+            <button
+                class="btn btn-secondary"
+                onclick="loadNews()"
+            >
+                🔄 Actualiser
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================
+     VTS
+========================= -->
+
+<section id="vts">
+
+    <div class="section-title">
+
+        <h2>
+            Le système VTS
+        </h2>
+
+        <p>
+            La monnaie utilisée au sein de VRCstudio.
+        </p>
+
+    </div>
+
+
+    <div class="vts-box">
+
+        <h3>
+            💰 VTS — VRCstudio
+        </h3>
+
+
+        <p>
+
+            Les VTS constituent la monnaie du forum.
+            Ils permettent notamment d'obtenir certains projets
+            et différents éléments proposés par la communauté.
+
+        </p>
+
+
+        <p>
+
+            Pour le travail communautaire, la règle indiquée
+            sur le forum est de
+
+            <strong>
+                100 VTS par journée de travail
+            </strong>,
+
+            soit
+
+            <strong>
+                5 VTS par heure
+            </strong>.
+
+        </p>
+
+
+        <div class="vts-rules">
+
+
+            <div class="vts-rule">
+
+                <strong>
+                    100 VTS
+                </strong>
+
+                1 journée de travail
+
+            </div>
+
+
+            <div class="vts-rule">
+
+                <strong>
+                    5 VTS
+                </strong>
+
+                1 heure de travail
+
+            </div>
+
+
+            <div class="vts-rule">
+
+                <strong>
+                    1000 VTS
+                </strong>
+
+                Récompense annoncée pour Stickman Bureau
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================
+     COMMUNAUTÉ
+========================= -->
+
+<section id="communaute">
+
+    <div class="community">
+
+        <h2>
+            Rejoins VRCstudio
+        </h2>
+
+
+        <p>
+
+            Participe aux projets, présente tes créations,
+            pose tes questions et échange avec les autres
+            membres de la communauté.
+
+        </p>
+
+
+        <a
+            href="https://vrcstudio.freeflarum.com/"
+            target="_blank"
+            rel="noopener"
+            class="btn btn-primary"
+        >
+            💬 Accéder au forum
         </a>
 
-    </section>
+    </div>
+
+</section>
+
+
+
+<!-- =========================
+     CONTACT
+========================= -->
+
+<section class="contact">
+
+    <div class="section-title">
+
+        <h2>
+            Une question ?
+        </h2>
+
+    </div>
+
+
+    <p>
+
+        Pour les questions concernant Stickman Bureau,
+        contactez
+
+        <span class="mention">
+            @VRC
+        </span>
+
+        sur le forum.
+
+    </p>
+
+
+    <a
+        href="https://vrcstudio.freeflarum.com/u/VRC"
+        target="_blank"
+        rel="noopener"
+        class="btn btn-secondary"
+    >
+        👤 Contacter @VRC
+    </a>
+
+
+    <div id="connection-status">
+        Connexion à la base VRCstudio…
+    </div>
+
+</section>
+
 
 </main>
+
 
 
 <!-- =========================
@@ -1033,9 +1901,12 @@
 
     <p>
 
-        © <span id="year"></span>
+        ©
+        <span id="year"></span>
 
-        <strong>VRCstudio</strong>
+        <strong>
+            VRCstudio
+        </strong>
 
         — Communauté de programmation & projets IA.
 
@@ -1044,57 +1915,367 @@
 </footer>
 
 
+
 <script>
-    // =========================
-    // SUPABASE
-    // =========================
 
-    const SUPABASE_URL = "https://xbxwxkgcfbkhiavthrvn.supabase.co";
-    const SUPABASE_KEY = "sb_publishable_cdrtTS0MsLcD8PTDzOAtAA_syW3t4SJ";
+/* =====================================================
+   CONFIGURATION SUPABASE
+   =====================================================
 
-    const supabaseClient = window.supabase.createClient(
+   ⚠️ REMPLACE UNIQUEMENT CES DEUX VALEURS.
+
+   Ne mets PAS ta Secret Key ici.
+   Utilise ta Publishable Key.
+===================================================== */
+
+
+const SUPABASE_URL =
+    "COLLE_TON_URL_SUPABASE_ICI";
+
+
+const SUPABASE_PUBLISHABLE_KEY =
+    "COLLE_TA_PUBLISHABLE_KEY_ICI";
+
+
+
+/* =====================================================
+   INITIALISATION
+===================================================== */
+
+
+const supabaseClient =
+    window.supabase.createClient(
         SUPABASE_URL,
-        SUPABASE_KEY
+        SUPABASE_PUBLISHABLE_KEY
     );
 
 
-    // =========================
-    // ANNÉE
-    // =========================
 
-    document.getElementById("year").textContent =
-        new Date().getFullYear();
+/* =====================================================
+   ANNÉE
+===================================================== */
 
 
-    // =========================
-    // TEST DE CONNEXION
-    // =========================
+document.getElementById("year").textContent =
+    new Date().getFullYear();
 
-    async function testSupabase() {
 
-        const { data, error } =
-            await supabaseClient
-                .from("projects")
-                .select("*");
 
-        if (error) {
+/* =====================================================
+   MENU MOBILE
+===================================================== */
 
-            console.error(
-                "Erreur Supabase :",
-                error
-            );
 
-            return;
-        }
+const menuButton =
+    document.getElementById("menu-button");
 
-        console.log(
-            "Connexion Supabase réussie !",
-            data
+
+const navLinks =
+    document.getElementById("nav-links");
+
+
+menuButton.addEventListener(
+    "click",
+    () => {
+
+        navLinks.classList.toggle("open");
+
+    }
+);
+
+
+navLinks.querySelectorAll("a").forEach(
+    link => {
+
+        link.addEventListener(
+            "click",
+            () => {
+
+                navLinks.classList.remove("open");
+
+            }
         );
+
+    }
+);
+
+
+
+/* =====================================================
+   PROJETS
+===================================================== */
+
+
+async function loadProjects() {
+
+    const count =
+        document.getElementById(
+            "project-count"
+        );
+
+
+    const { data, error } =
+        await supabaseClient
+
+            .from("projects")
+
+            .select("*");
+
+
+    if (error) {
+
+        console.error(
+            "Erreur Supabase projects :",
+            error
+        );
+
+        count.textContent = "!";
+
+        return;
     }
 
 
-    testSupabase();
+    count.textContent =
+        data.length;
+}
+
+
+
+/* =====================================================
+   ACTUALITÉS
+===================================================== */
+
+
+async function loadNews() {
+
+    const container =
+        document.getElementById(
+            "news-list"
+        );
+
+
+    container.innerHTML =
+        '<div class="loading">Chargement des actualités…</div>';
+
+
+    const { data, error } =
+        await supabaseClient
+
+            .from("news")
+
+            .select("*");
+
+
+    if (error) {
+
+        console.error(
+            "Erreur Supabase news :",
+            error
+        );
+
+
+        container.innerHTML = `
+
+            <div class="loading">
+
+                ❌ Impossible de charger les actualités.
+
+                <br>
+
+                Vérifie la console du navigateur.
+
+            </div>
+
+        `;
+
+
+        document.getElementById(
+            "news-count"
+        ).textContent = "!";
+
+
+        return;
+    }
+
+
+    document.getElementById(
+        "news-count"
+    ).textContent =
+        data.length;
+
+
+    if (!data.length) {
+
+        container.innerHTML = `
+
+            <div class="loading">
+
+                📭 Aucune actualité publiée pour le moment.
+
+            </div>
+
+        `;
+
+        return;
+    }
+
+
+    container.innerHTML =
+        data.map(
+            item => {
+
+                const title =
+                    escapeHtml(
+                        item.title ??
+                        "Sans titre"
+                    );
+
+
+                const content =
+                    escapeHtml(
+                        item.content ??
+                        item.description ??
+                        ""
+                    );
+
+
+                return `
+
+                    <article
+                        class="news-card"
+                    >
+
+                        <div
+                            class="news-date"
+                        >
+
+                            VRCSTUDIO • ACTUALITÉ
+
+                        </div>
+
+
+                        <h3>
+                            ${title}
+                        </h3>
+
+
+                        <p>
+                            ${content}
+                        </p>
+
+                    </article>
+
+                `;
+
+            }
+        ).join("");
+
+}
+
+
+
+/* =====================================================
+   PROTECTION HTML
+===================================================== */
+
+
+function escapeHtml(value) {
+
+    return String(value)
+
+        .replaceAll(
+            "&",
+            "&amp;"
+        )
+
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
+
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
+
+        .replaceAll(
+            '"',
+            "&quot;"
+        )
+
+        .replaceAll(
+            "'",
+            "&#039;"
+        );
+}
+
+
+
+/* =====================================================
+   INITIALISATION
+===================================================== */
+
+
+async function init() {
+
+    const status =
+        document.getElementById(
+            "connection-status"
+        );
+
+
+    if (
+
+        SUPABASE_URL.includes(
+            "COLLE_TON_URL"
+        )
+
+        ||
+
+        SUPABASE_PUBLISHABLE_KEY.includes(
+            "COLLE_TA"
+        )
+
+    ) {
+
+        status.textContent =
+            "⚠️ Configure l'URL et la Publishable Key Supabase.";
+
+        return;
+    }
+
+
+    try {
+
+        await Promise.all([
+
+            loadProjects(),
+
+            loadNews()
+
+        ]);
+
+
+        status.textContent =
+            "🟢 Base de données VRCstudio connectée";
+
+
+    } catch (error) {
+
+        console.error(error);
+
+
+        status.textContent =
+            "🔴 Erreur de connexion à Supabase";
+
+    }
+
+}
+
+
+init();
+
 </script>
+
 </body>
 </html>
