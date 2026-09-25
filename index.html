@@ -12,19 +12,559 @@
     <meta name="keywords"
           content="VRCstudio, programmation, IA, intelligence artificielle, Python, projets, développement">
 
-    <!-- =========================
-         SUPABASE
-    ========================== -->
+    <meta name="theme-color" content="#070914">
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- =====================================================
+         SUPABASE
+    ====================================================== -->
+
+    <script type="module">
+        import { createClient }
+        from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
+        /*
+         * =====================================================
+         * CONFIGURATION SUPABASE
+         * =====================================================
+         *
+         * IMPORTANT :
+         * - URL = Project URL
+         * - KEY = Publishable Key
+         * - NE JAMAIS mettre la Secret Key ici.
+         */
+
+        const SUPABASE_URL =
+            "https://xbxwxkgcfbkhiavthrvn.supabase.co";
+
+        const SUPABASE_PUBLISHABLE_KEY =
+            "sb_publishable_cdrtTS0MsLcD8PTDzOAtAA_syW3t4SJ";
+
+
+        /*
+         * =====================================================
+         * VÉRIFICATION DE LA CONFIGURATION
+         * =====================================================
+         */
+
+        const cleanUrl = String(SUPABASE_URL).trim();
+        const cleanKey = String(SUPABASE_PUBLISHABLE_KEY).trim();
+
+        const statusElement =
+            document.getElementById("connection-status");
+
+
+        function setStatus(message) {
+
+            if (statusElement) {
+                statusElement.textContent = message;
+            }
+
+        }
+
+
+        /*
+         * Vérification de l'URL
+         */
+
+        if (
+            !cleanUrl.startsWith("https://") &&
+            !cleanUrl.startsWith("http://")
+        ) {
+
+            console.error(
+                "URL Supabase invalide :",
+                cleanUrl
+            );
+
+            setStatus(
+                "🔴 URL Supabase invalide"
+            );
+
+        } else {
+
+            /*
+             * =====================================================
+             * CRÉATION DU CLIENT SUPABASE
+             * =====================================================
+             */
+
+            let supabaseClient = null;
+
+
+            try {
+
+                supabaseClient =
+                    createClient(
+                        cleanUrl,
+                        cleanKey
+                    );
+
+                console.log(
+                    "🟢 Client Supabase initialisé"
+                );
+
+
+                /*
+                 * =====================================================
+                 * ANNÉE
+                 * =====================================================
+                 */
+
+                const year =
+                    document.getElementById("year");
+
+                if (year) {
+                    year.textContent =
+                        new Date().getFullYear();
+                }
+
+
+                /*
+                 * =====================================================
+                 * MENU MOBILE
+                 * =====================================================
+                 */
+
+                const menuButton =
+                    document.getElementById("menu-button");
+
+                const navLinks =
+                    document.getElementById("nav-links");
+
+
+                if (menuButton && navLinks) {
+
+                    menuButton.addEventListener(
+                        "click",
+                        () => {
+
+                            navLinks.classList.toggle(
+                                "open"
+                            );
+
+                        }
+                    );
+
+
+                    navLinks
+                        .querySelectorAll("a")
+                        .forEach(link => {
+
+                            link.addEventListener(
+                                "click",
+                                () => {
+
+                                    navLinks.classList.remove(
+                                        "open"
+                                    );
+
+                                }
+                            );
+
+                        });
+
+                }
+
+
+                /*
+                 * =====================================================
+                 * PROTECTION CONTRE LE HTML
+                 * =====================================================
+                 */
+
+                function escapeHtml(value) {
+
+                    return String(value ?? "")
+
+                        .replaceAll(
+                            "&",
+                            "&amp;"
+                        )
+
+                        .replaceAll(
+                            "<",
+                            "&lt;"
+                        )
+
+                        .replaceAll(
+                            ">",
+                            "&gt;"
+                        )
+
+                        .replaceAll(
+                            '"',
+                            "&quot;"
+                        )
+
+                        .replaceAll(
+                            "'",
+                            "&#039;"
+                        );
+
+                }
+
+
+                /*
+                 * =====================================================
+                 * CHARGER LES PROJETS
+                 * =====================================================
+                 */
+
+                async function loadProjects() {
+
+                    const count =
+                        document.getElementById(
+                            "project-count"
+                        );
+
+
+                    try {
+
+                        const {
+                            data,
+                            error
+                        } =
+                            await supabaseClient
+
+                                .from("projects")
+
+                                .select("*");
+
+
+                        if (error) {
+
+                            console.error(
+                                "Erreur Supabase projects :",
+                                error
+                            );
+
+                            if (count) {
+                                count.textContent = "!";
+                            }
+
+                            return false;
+                        }
+
+
+                        if (count) {
+
+                            count.textContent =
+                                data?.length ?? 0;
+
+                        }
+
+
+                        console.log(
+                            "🟢 Projets chargés :",
+                            data
+                        );
+
+
+                        return true;
+
+                    } catch (error) {
+
+                        console.error(
+                            "Erreur lors du chargement des projets :",
+                            error
+                        );
+
+                        if (count) {
+                            count.textContent = "!";
+                        }
+
+                        return false;
+                    }
+
+                }
+
+
+                /*
+                 * =====================================================
+                 * CHARGER LES ACTUALITÉS
+                 * =====================================================
+                 */
+
+                window.loadNews = async function() {
+
+                    const container =
+                        document.getElementById(
+                            "news-list"
+                        );
+
+
+                    const newsCount =
+                        document.getElementById(
+                            "news-count"
+                        );
+
+
+                    if (!container) {
+                        return;
+                    }
+
+
+                    container.innerHTML = `
+                        <div class="loading">
+                            <span class="loading-spinner"></span>
+                            Chargement des actualités…
+                        </div>
+                    `;
+
+
+                    try {
+
+                        const {
+                            data,
+                            error
+                        } =
+                            await supabaseClient
+
+                                .from("news")
+
+                                .select("*");
+
+
+                        if (error) {
+
+                            console.error(
+                                "Erreur Supabase news :",
+                                error
+                            );
+
+
+                            container.innerHTML = `
+                                <div class="loading error-message">
+                                    ❌ Impossible de charger les actualités.
+                                    <br>
+                                    <small>
+                                        Consulte la console du navigateur.
+                                    </small>
+                                </div>
+                            `;
+
+
+                            if (newsCount) {
+                                newsCount.textContent = "!";
+                            }
+
+
+                            return;
+                        }
+
+
+                        const news =
+                            data ?? [];
+
+
+                        if (newsCount) {
+
+                            newsCount.textContent =
+                                news.length;
+
+                        }
+
+
+                        console.log(
+                            "🟢 Actualités chargées :",
+                            news
+                        );
+
+
+                        if (news.length === 0) {
+
+                            container.innerHTML = `
+                                <div class="loading">
+                                    📭 Aucune actualité publiée pour le moment.
+                                </div>
+                            `;
+
+                            return;
+                        }
+
+
+                        container.innerHTML =
+                            news
+                                .map(item => {
+
+                                    const title =
+                                        escapeHtml(
+                                            item.title ??
+                                            "Sans titre"
+                                        );
+
+
+                                    const content =
+                                        escapeHtml(
+                                            item.content ??
+                                            item.description ??
+                                            ""
+                                        );
+
+
+                                    let dateText =
+                                        "";
+
+
+                                    if (item.created_at) {
+
+                                        const date =
+                                            new Date(
+                                                item.created_at
+                                            );
+
+
+                                        if (
+                                            !Number.isNaN(
+                                                date.getTime()
+                                            )
+                                        ) {
+
+                                            dateText =
+                                                date.toLocaleDateString(
+                                                    "fr-FR",
+                                                    {
+                                                        day: "2-digit",
+                                                        month: "long",
+                                                        year: "numeric"
+                                                    }
+                                                );
+
+                                        }
+
+                                    }
+
+
+                                    return `
+
+                                        <article
+                                            class="news-card"
+                                        >
+
+                                            <div
+                                                class="news-date"
+                                            >
+                                                📰 VRCSTUDIO
+                                                ${
+                                                    dateText
+                                                        ? " • " + escapeHtml(dateText)
+                                                        : ""
+                                                }
+                                            </div>
+
+
+                                            <h3>
+                                                ${title}
+                                            </h3>
+
+
+                                            <p>
+                                                ${content}
+                                            </p>
+
+                                        </article>
+
+                                    `;
+
+                                })
+                                .join("");
+
+                    } catch (error) {
+
+                        console.error(
+                            "Erreur inattendue news :",
+                            error
+                        );
+
+
+                        container.innerHTML = `
+                            <div class="loading error-message">
+                                ❌ Une erreur est survenue.
+                            </div>
+                        `;
+
+
+                        if (newsCount) {
+                            newsCount.textContent = "!";
+                        }
+
+                    }
+
+                };
+
+
+                /*
+                 * =====================================================
+                 * INITIALISATION
+                 * =====================================================
+                 */
+
+                async function init() {
+
+                    setStatus(
+                        "🟡 Connexion à la base VRCstudio…"
+                    );
+
+
+                    const [
+                        projectsOK,
+                        newsOK
+                    ] =
+                        await Promise.all([
+                            loadProjects(),
+                            window.loadNews()
+                        ]);
+
+
+                    if (
+                        projectsOK ||
+                        newsOK
+                    ) {
+
+                        setStatus(
+                            "🟢 Base de données VRCstudio connectée"
+                        );
+
+                    } else {
+
+                        setStatus(
+                            "🔴 Impossible de charger les données Supabase"
+                        );
+
+                    }
+
+                }
+
+
+                init();
+
+            } catch (error) {
+
+                console.error(
+                    "❌ Erreur Supabase :",
+                    error
+                );
+
+
+                setStatus(
+                    "🔴 Erreur d'initialisation de Supabase"
+                );
+
+            }
+
+        }
+
+    </script>
+
 
     <style>
 
-        /* =========================
+        /* =====================================================
            VARIABLES
-        ========================== */
+        ====================================================== */
 
         :root {
+
             --background: #070914;
             --background-secondary: #0c1020;
 
@@ -43,22 +583,28 @@
             --border: rgba(255,255,255,.10);
 
             --card: rgba(255,255,255,.045);
+
         }
 
 
-        /* =========================
+        /* =====================================================
            RESET
-        ========================== */
+        ====================================================== */
 
         * {
+
             margin: 0;
             padding: 0;
+
             box-sizing: border-box;
+
         }
 
 
         html {
+
             scroll-behavior: smooth;
+
         }
 
 
@@ -91,10 +637,9 @@
                 var(--background);
 
             overflow-x: hidden;
+
         }
 
-
-        /* grille de fond */
 
         body::before {
 
@@ -129,17 +674,23 @@
                     #000,
                     transparent 80%
                 );
+
         }
 
 
         a {
+
             color: inherit;
+
             text-decoration: none;
+
         }
 
 
         button {
+
             font-family: inherit;
+
         }
 
 
@@ -151,12 +702,13 @@
 
             padding-left: 25px;
             padding-right: 25px;
+
         }
 
 
-        /* =========================
+        /* =====================================================
            HEADER
-        ========================== */
+        ====================================================== */
 
         header {
 
@@ -176,6 +728,7 @@
 
             border-bottom:
                 1px solid var(--border);
+
         }
 
 
@@ -188,6 +741,7 @@
             align-items: center;
 
             justify-content: space-between;
+
         }
 
 
@@ -198,12 +752,14 @@
             font-weight: 900;
 
             letter-spacing: 1px;
+
         }
 
 
         .logo span {
 
             color: var(--purple);
+
         }
 
 
@@ -216,6 +772,7 @@
             gap: 24px;
 
             list-style: none;
+
         }
 
 
@@ -226,6 +783,7 @@
             font-weight: 700;
 
             transition: .25s;
+
         }
 
 
@@ -234,6 +792,7 @@
             color: white;
 
             transform: translateY(-1px);
+
         }
 
 
@@ -247,6 +806,7 @@
                 rgba(117,108,255,.35);
 
             border-radius: 10px;
+
         }
 
 
@@ -254,25 +814,29 @@
 
             display: none;
 
-            border: 1px solid var(--border);
+            border:
+                1px solid var(--border);
 
-            background: rgba(255,255,255,.05);
+            background:
+                rgba(255,255,255,.05);
 
             color: white;
 
-            padding: 9px 12px;
+            padding:
+                9px 12px;
 
             border-radius: 10px;
 
             cursor: pointer;
 
             font-size: 18px;
+
         }
 
 
-        /* =========================
+        /* =====================================================
            HERO
-        ========================== */
+        ====================================================== */
 
         .hero {
 
@@ -290,12 +854,14 @@
                 130px 20px 85px;
 
             position: relative;
+
         }
 
 
         .hero-content {
 
             max-width: 900px;
+
         }
 
 
@@ -326,6 +892,7 @@
             font-size: 14px;
 
             font-weight: 700;
+
         }
 
 
@@ -340,8 +907,8 @@
                 var(--green);
 
             box-shadow:
-                0 0 12px
-                var(--green);
+                0 0 12px var(--green);
+
         }
 
 
@@ -359,12 +926,14 @@
             letter-spacing: -5px;
 
             margin-bottom: 25px;
+
         }
 
 
         .hero h1 span {
 
             color: var(--purple);
+
         }
 
 
@@ -377,6 +946,7 @@
             color: var(--text-secondary);
 
             font-size: 20px;
+
         }
 
 
@@ -391,6 +961,7 @@
             gap: 15px;
 
             flex-wrap: wrap;
+
         }
 
 
@@ -414,6 +985,7 @@
             transition: .25s;
 
             cursor: pointer;
+
         }
 
 
@@ -421,6 +993,7 @@
 
             transform:
                 translateY(-3px);
+
         }
 
 
@@ -436,6 +1009,7 @@
             box-shadow:
                 0 12px 35px
                 rgba(117,108,255,.28);
+
         }
 
 
@@ -445,14 +1019,14 @@
                 rgba(255,255,255,.045);
 
             border:
-                1px solid
-                var(--border);
+                1px solid var(--border);
+
         }
 
 
-        /* =========================
+        /* =====================================================
            STATS
-        ========================== */
+        ====================================================== */
 
         .stats {
 
@@ -467,6 +1041,7 @@
 
             margin:
                 55px auto 0;
+
         }
 
 
@@ -475,8 +1050,7 @@
             padding: 18px;
 
             border:
-                1px solid
-                var(--border);
+                1px solid var(--border);
 
             background:
                 rgba(255,255,255,.035);
@@ -484,6 +1058,7 @@
             border-radius: 15px;
 
             transition: .3s;
+
         }
 
 
@@ -494,6 +1069,7 @@
 
             border-color:
                 rgba(117,108,255,.3);
+
         }
 
 
@@ -502,6 +1078,7 @@
             display: block;
 
             font-size: 24px;
+
         }
 
 
@@ -511,12 +1088,13 @@
                 #8f98b5;
 
             font-size: 13px;
+
         }
 
 
-        /* =========================
+        /* =====================================================
            SECTIONS
-        ========================== */
+        ====================================================== */
 
         section {
 
@@ -526,6 +1104,7 @@
 
             padding:
                 100px 25px;
+
         }
 
 
@@ -534,6 +1113,7 @@
             text-align: center;
 
             margin-bottom: 48px;
+
         }
 
 
@@ -542,6 +1122,7 @@
             font-size: 42px;
 
             margin-bottom: 10px;
+
         }
 
 
@@ -549,12 +1130,13 @@
 
             color:
                 #939cb9;
+
         }
 
 
-        /* =========================
+        /* =====================================================
            PROJECT
-        ========================== */
+        ====================================================== */
 
         .project {
 
@@ -580,12 +1162,12 @@
                 );
 
             border:
-                1px solid
-                var(--border);
+                1px solid var(--border);
 
             box-shadow:
                 0 25px 80px
                 rgba(0,0,0,.18);
+
         }
 
 
@@ -612,10 +1194,10 @@
                 );
 
             border:
-                1px solid
-                var(--border);
+                1px solid var(--border);
 
             overflow: hidden;
+
         }
 
 
@@ -636,6 +1218,7 @@
 
             animation:
                 pulse 4s infinite;
+
         }
 
 
@@ -650,11 +1233,10 @@
                 );
 
             animation:
-                float 3s
-                ease-in-out
-                infinite;
+                float 3s ease-in-out infinite;
 
             z-index: 1;
+
         }
 
 
@@ -669,6 +1251,7 @@
                 transform:
                     translateY(-15px);
             }
+
         }
 
 
@@ -680,6 +1263,7 @@
                     scale(.85);
 
                 opacity: .3;
+
             }
 
             50% {
@@ -688,7 +1272,9 @@
                     scale(1.15);
 
                 opacity: .8;
+
             }
+
         }
 
 
@@ -697,6 +1283,7 @@
             font-size: 34px;
 
             margin-bottom: 15px;
+
         }
 
 
@@ -706,6 +1293,7 @@
                 #b2bad3;
 
             margin-bottom: 20px;
+
         }
 
 
@@ -714,6 +1302,7 @@
             list-style: none;
 
             margin: 20px 0;
+
         }
 
 
@@ -723,6 +1312,7 @@
 
             color:
                 #d8dcef;
+
         }
 
 
@@ -739,6 +1329,7 @@
 
             margin-right:
                 10px;
+
         }
 
 
@@ -754,8 +1345,8 @@
                 rgba(255,255,255,.04);
 
             border:
-                1px solid
-                var(--border);
+                1px solid var(--border);
+
         }
 
 
@@ -763,12 +1354,13 @@
 
             color:
                 #9a93ff;
+
         }
 
 
-        /* =========================
+        /* =====================================================
            CARDS
-        ========================== */
+        ====================================================== */
 
         .cards {
 
@@ -781,6 +1373,7 @@
                 );
 
             gap: 20px;
+
         }
 
 
@@ -794,14 +1387,14 @@
                 var(--card);
 
             border:
-                1px solid
-                var(--border);
+                1px solid var(--border);
 
             transition: .3s;
 
             position: relative;
 
             overflow: hidden;
+
         }
 
 
@@ -816,7 +1409,6 @@
             height: 140px;
 
             top: -80px;
-
             left: -80px;
 
             background:
@@ -824,6 +1416,7 @@
 
             filter:
                 blur(35px);
+
         }
 
 
@@ -834,6 +1427,7 @@
 
             border-color:
                 rgba(117,108,255,.35);
+
         }
 
 
@@ -842,6 +1436,7 @@
             font-size: 36px;
 
             margin-bottom: 13px;
+
         }
 
 
@@ -850,6 +1445,7 @@
             font-size: 21px;
 
             margin-bottom: 9px;
+
         }
 
 
@@ -857,12 +1453,13 @@
 
             color:
                 #a7afc9;
+
         }
 
 
-        /* =========================
+        /* =====================================================
            NEWS
-        ========================== */
+        ====================================================== */
 
         .news-panel {
 
@@ -874,8 +1471,8 @@
                 rgba(255,255,255,.04);
 
             border:
-                1px solid
-                var(--border);
+                1px solid var(--border);
+
         }
 
 
@@ -890,6 +1487,7 @@
                 );
 
             gap: 18px;
+
         }
 
 
@@ -903,10 +1501,10 @@
                 rgba(255,255,255,.045);
 
             border:
-                1px solid
-                var(--border);
+                1px solid var(--border);
 
             transition: .3s;
+
         }
 
 
@@ -917,6 +1515,7 @@
 
             border-color:
                 rgba(117,108,255,.3);
+
         }
 
 
@@ -931,6 +1530,7 @@
                 800;
 
             margin-bottom: 8px;
+
         }
 
 
@@ -939,6 +1539,7 @@
             margin-bottom: 8px;
 
             font-size: 21px;
+
         }
 
 
@@ -946,6 +1547,9 @@
 
             color:
                 var(--text-secondary);
+
+            white-space: pre-wrap;
+
         }
 
 
@@ -956,13 +1560,62 @@
             color:
                 var(--text-secondary);
 
-            padding: 25px;
+            padding: 30px;
+
+            grid-column:
+                1 / -1;
+
         }
 
 
-        /* =========================
+        .loading-spinner {
+
+            display: inline-block;
+
+            width: 15px;
+
+            height: 15px;
+
+            border:
+                2px solid
+                rgba(255,255,255,.2);
+
+            border-top-color:
+                #918aff;
+
+            border-radius: 50%;
+
+            animation:
+                spin .8s linear infinite;
+
+            margin-right: 8px;
+
+            vertical-align: middle;
+
+        }
+
+
+        @keyframes spin {
+
+            to {
+                transform:
+                    rotate(360deg);
+            }
+
+        }
+
+
+        .error-message {
+
+            color:
+                #ff9b9b;
+
+        }
+
+
+        /* =====================================================
            VTS
-        ========================== */
+        ====================================================== */
 
         .vts-box {
 
@@ -974,8 +1627,8 @@
                 rgba(255,255,255,.04);
 
             border:
-                1px solid
-                var(--border);
+                1px solid var(--border);
+
         }
 
 
@@ -984,6 +1637,7 @@
             font-size: 27px;
 
             margin-bottom: 15px;
+
         }
 
 
@@ -993,6 +1647,7 @@
                 #aeb6d0;
 
             margin-bottom: 15px;
+
         }
 
 
@@ -1009,6 +1664,7 @@
             gap: 15px;
 
             margin-top: 25px;
+
         }
 
 
@@ -1024,6 +1680,7 @@
             border:
                 1px solid
                 rgba(117,108,255,.15);
+
         }
 
 
@@ -1037,12 +1694,13 @@
 
             color:
                 #8179ff;
+
         }
 
 
-        /* =========================
+        /* =====================================================
            COMMUNITY
-        ========================== */
+        ====================================================== */
 
         .community {
 
@@ -1061,8 +1719,8 @@
                 );
 
             border:
-                1px solid
-                var(--border);
+                1px solid var(--border);
+
         }
 
 
@@ -1071,6 +1729,7 @@
             font-size: 42px;
 
             margin-bottom: 15px;
+
         }
 
 
@@ -1083,16 +1742,18 @@
 
             color:
                 #adb5d0;
+
         }
 
 
-        /* =========================
+        /* =====================================================
            CONTACT
-        ========================== */
+        ====================================================== */
 
         .contact {
 
             text-align: center;
+
         }
 
 
@@ -1102,6 +1763,7 @@
                 #aab2cc;
 
             margin-bottom: 20px;
+
         }
 
 
@@ -1112,12 +1774,13 @@
 
             font-weight:
                 bold;
+
         }
 
 
-        /* =========================
+        /* =====================================================
            STATUS
-        ========================== */
+        ====================================================== */
 
         #connection-status {
 
@@ -1127,12 +1790,13 @@
 
             color:
                 #7f89a8;
+
         }
 
 
-        /* =========================
+        /* =====================================================
            FOOTER
-        ========================== */
+        ====================================================== */
 
         footer {
 
@@ -1145,8 +1809,8 @@
                 #737b97;
 
             border-top:
-                1px solid
-                var(--border);
+                1px solid var(--border);
+
         }
 
 
@@ -1154,12 +1818,13 @@
 
             color:
                 white;
+
         }
 
 
-        /* =========================
+        /* =====================================================
            MOBILE
-        ========================== */
+        ====================================================== */
 
         @media(max-width:800px) {
 
@@ -1182,22 +1847,24 @@
                     rgba(8,11,22,.97);
 
                 border:
-                    1px solid
-                    var(--border);
+                    1px solid var(--border);
 
                 border-radius: 15px;
+
             }
 
 
             .nav-links.open {
 
                 display: flex;
+
             }
 
 
             .menu-button {
 
                 display: block;
+
             }
 
 
@@ -1205,12 +1872,14 @@
 
                 letter-spacing:
                     -3px;
+
             }
 
 
             .hero p {
 
                 font-size: 17px;
+
             }
 
 
@@ -1218,6 +1887,7 @@
 
                 grid-template-columns:
                     1fr;
+
             }
 
 
@@ -1225,6 +1895,7 @@
 
                 padding:
                     75px 20px;
+
             }
 
 
@@ -1232,6 +1903,7 @@
 
                 grid-template-columns:
                     1fr;
+
             }
 
 
@@ -1239,6 +1911,7 @@
 
                 min-height:
                     250px;
+
             }
 
 
@@ -1246,6 +1919,7 @@
 
                 font-size:
                     100px;
+
             }
 
 
@@ -1254,19 +1928,22 @@
 
                 font-size:
                     34px;
+
             }
+
         }
 
     </style>
+
 </head>
 
 
 <body>
 
 
-<!-- =========================
+<!-- =====================================================
      HEADER
-========================= -->
+====================================================== -->
 
 <header>
 
@@ -1328,17 +2005,16 @@
 </header>
 
 
-
-<!-- =========================
+<!-- =====================================================
      MAIN
-========================= -->
+====================================================== -->
 
 <main>
 
 
-<!-- =========================
+<!-- =====================================================
      HERO
-========================= -->
+====================================================== -->
 
 <div
     class="hero"
@@ -1392,14 +2068,12 @@
         </div>
 
 
-        <!-- COMPTEURS -->
-
         <div class="stats">
 
             <div class="stat">
 
                 <strong id="project-count">
-                    —
+                    …
                 </strong>
 
                 <span>
@@ -1412,7 +2086,7 @@
             <div class="stat">
 
                 <strong id="news-count">
-                    —
+                    …
                 </strong>
 
                 <span>
@@ -1441,10 +2115,9 @@
 </div>
 
 
-
-<!-- =========================
+<!-- =====================================================
      PROJET
-========================= -->
+====================================================== -->
 
 <section id="projet">
 
@@ -1559,10 +2232,9 @@
 </section>
 
 
-
-<!-- =========================
+<!-- =====================================================
      CAPACITÉS
-========================= -->
+====================================================== -->
 
 <section>
 
@@ -1658,10 +2330,9 @@
 </section>
 
 
-
-<!-- =========================
-     ACTUALITÉS SUPABASE
-========================= -->
+<!-- =====================================================
+     ACTUALITÉS
+====================================================== -->
 
 <section id="actualites">
 
@@ -1686,13 +2357,22 @@
         >
 
             <div class="loading">
+
+                <span class="loading-spinner"></span>
+
                 Chargement des actualités…
+
             </div>
 
         </div>
 
 
-        <div style="text-align:center;margin-top:25px;">
+        <div
+            style="
+                text-align:center;
+                margin-top:25px;
+            "
+        >
 
             <button
                 class="btn btn-secondary"
@@ -1708,10 +2388,9 @@
 </section>
 
 
-
-<!-- =========================
+<!-- =====================================================
      VTS
-========================= -->
+====================================================== -->
 
 <section id="vts">
 
@@ -1805,10 +2484,9 @@
 </section>
 
 
-
-<!-- =========================
+<!-- =====================================================
      COMMUNAUTÉ
-========================= -->
+====================================================== -->
 
 <section id="communaute">
 
@@ -1842,10 +2520,9 @@
 </section>
 
 
-
-<!-- =========================
+<!-- =====================================================
      CONTACT
-========================= -->
+====================================================== -->
 
 <section class="contact">
 
@@ -1883,7 +2560,7 @@
 
 
     <div id="connection-status">
-        Connexion à la base VRCstudio…
+        🟡 Initialisation de la base VRCstudio…
     </div>
 
 </section>
@@ -1892,10 +2569,9 @@
 </main>
 
 
-
-<!-- =========================
+<!-- =====================================================
      FOOTER
-========================= -->
+====================================================== -->
 
 <footer>
 
@@ -1914,368 +2590,6 @@
 
 </footer>
 
-
-
-<script>
-
-/* =====================================================
-   CONFIGURATION SUPABASE
-   =====================================================
-
-   ⚠️ REMPLACE UNIQUEMENT CES DEUX VALEURS.
-
-   Ne mets PAS ta Secret Key ici.
-   Utilise ta Publishable Key.
-===================================================== */
-
-
-const SUPABASE_URL =
-    "https://xbxwxkgcfbkhiavthrvn.supabase.co";
-
-
-const SUPABASE_PUBLISHABLE_KEY =
-    "sb_publishable_cdrtTS0MsLcD8PTDzOAtAA_syW3t4SJ";
-
-
-
-/* =====================================================
-   INITIALISATION
-===================================================== */
-
-
-const supabaseClient =
-    window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_PUBLISHABLE_KEY
-    );
-
-
-
-/* =====================================================
-   ANNÉE
-===================================================== */
-
-
-document.getElementById("year").textContent =
-    new Date().getFullYear();
-
-
-
-/* =====================================================
-   MENU MOBILE
-===================================================== */
-
-
-const menuButton =
-    document.getElementById("menu-button");
-
-
-const navLinks =
-    document.getElementById("nav-links");
-
-
-menuButton.addEventListener(
-    "click",
-    () => {
-
-        navLinks.classList.toggle("open");
-
-    }
-);
-
-
-navLinks.querySelectorAll("a").forEach(
-    link => {
-
-        link.addEventListener(
-            "click",
-            () => {
-
-                navLinks.classList.remove("open");
-
-            }
-        );
-
-    }
-);
-
-
-
-/* =====================================================
-   PROJETS
-===================================================== */
-
-
-async function loadProjects() {
-
-    const count =
-        document.getElementById(
-            "project-count"
-        );
-
-
-    const { data, error } =
-        await supabaseClient
-
-            .from("projects")
-
-            .select("*");
-
-
-    if (error) {
-
-        console.error(
-            "Erreur Supabase projects :",
-            error
-        );
-
-        count.textContent = "!";
-
-        return;
-    }
-
-
-    count.textContent =
-        data.length;
-}
-
-
-
-/* =====================================================
-   ACTUALITÉS
-===================================================== */
-
-
-async function loadNews() {
-
-    const container =
-        document.getElementById(
-            "news-list"
-        );
-
-
-    container.innerHTML =
-        '<div class="loading">Chargement des actualités…</div>';
-
-
-    const { data, error } =
-        await supabaseClient
-
-            .from("news")
-
-            .select("*");
-
-
-    if (error) {
-
-        console.error(
-            "Erreur Supabase news :",
-            error
-        );
-
-
-        container.innerHTML = `
-
-            <div class="loading">
-
-                ❌ Impossible de charger les actualités.
-
-                <br>
-
-                Vérifie la console du navigateur.
-
-            </div>
-
-        `;
-
-
-        document.getElementById(
-            "news-count"
-        ).textContent = "!";
-
-
-        return;
-    }
-
-
-    document.getElementById(
-        "news-count"
-    ).textContent =
-        data.length;
-
-
-    if (!data.length) {
-
-        container.innerHTML = `
-
-            <div class="loading">
-
-                📭 Aucune actualité publiée pour le moment.
-
-            </div>
-
-        `;
-
-        return;
-    }
-
-
-    container.innerHTML =
-        data.map(
-            item => {
-
-                const title =
-                    escapeHtml(
-                        item.title ??
-                        "Sans titre"
-                    );
-
-
-                const content =
-                    escapeHtml(
-                        item.content ??
-                        item.description ??
-                        ""
-                    );
-
-
-                return `
-
-                    <article
-                        class="news-card"
-                    >
-
-                        <div
-                            class="news-date"
-                        >
-
-                            VRCSTUDIO • ACTUALITÉ
-
-                        </div>
-
-
-                        <h3>
-                            ${title}
-                        </h3>
-
-
-                        <p>
-                            ${content}
-                        </p>
-
-                    </article>
-
-                `;
-
-            }
-        ).join("");
-
-}
-
-
-
-/* =====================================================
-   PROTECTION HTML
-===================================================== */
-
-
-function escapeHtml(value) {
-
-    return String(value)
-
-        .replaceAll(
-            "&",
-            "&amp;"
-        )
-
-        .replaceAll(
-            "<",
-            "&lt;"
-        )
-
-        .replaceAll(
-            ">",
-            "&gt;"
-        )
-
-        .replaceAll(
-            '"',
-            "&quot;"
-        )
-
-        .replaceAll(
-            "'",
-            "&#039;"
-        );
-}
-
-
-
-/* =====================================================
-   INITIALISATION
-===================================================== */
-
-
-async function init() {
-
-    const status =
-        document.getElementById(
-            "connection-status"
-        );
-
-
-    if (
-
-        SUPABASE_URL.includes(
-            "https://xbxwxkgcfbkhiavthrvn.supabase.co"
-        )
-
-        ||
-
-        SUPABASE_PUBLISHABLE_KEY.includes(
-            "sb_publishable_cdrtTS0MsLcD8PTDzOAtAA_syW3t4SJ"
-        )
-
-    ) {
-
-        status.textContent =
-            "⚠️ Configure l'URL et la Publishable Key Supabase.";
-
-        return;
-    }
-
-
-    try {
-
-        await Promise.all([
-
-            loadProjects(),
-
-            loadNews()
-
-        ]);
-
-
-        status.textContent =
-            "🟢 Base de données VRCstudio connectée";
-
-
-    } catch (error) {
-
-        console.error(error);
-
-
-        status.textContent =
-            "🔴 Erreur de connexion à Supabase";
-
-    }
-
-}
-
-
-init();
-
-</script>
 
 </body>
 </html>
